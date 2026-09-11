@@ -4,7 +4,8 @@
   "description": "A private space for two people to share notes and messages.",
   "main": "server.js",
   "scripts": {
-    "start": "node --env-file=.env server.js"
+    "start": "node --env-file=.env server.js",
+    "test": "node test.js"
   },
   "dependencies": {
     "express": "^4.21.0",
