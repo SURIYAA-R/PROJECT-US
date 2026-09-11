@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Our Space</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Work+Sans:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f8f5ec;
+            --surface: rgba(255, 255, 255, 0.5);
+            --ink: #33422f;
+            --dusk: #8a9683;
+            --seal: #a9d6a0;
+            --seal-start: #c3d6ac;
+            --seal-end: #8fa878;
+            --gold: #a68a52;
+            --line: #dde3cd;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: radial-gradient(ellipse at top, #eef0e2 0%, var(--bg) 65%);
+            color: var(--ink);
+            font-family: 'Work Sans', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .envelope {
+            width: 100%;
+            max-width: 460px;
+            position: relative;
+        }
+
+        /* the "flap" — a triangle sitting on top of the card, like an envelope flap */
+        .flap {
+            width: 100%;
+            height: 60px;
+            background: var(--surface);
+            clip-path: polygon(0 0, 50% 100%, 100% 0);
+            margin-bottom: -1px;
+        }
+
+        .card {
+            background: var(--surface);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(143, 168, 120, 0.3);
+            border-radius: 4px;
+            padding: 36px 32px 32px;
+            box-shadow: 0 30px 60px -20px rgba(80, 90, 60, 0.25);
+        }
+
+        h1 {
+            font-family: 'Fraunces', serif;
+            font-weight: 600;
+            font-size: 1.6rem;
+            margin: 0 0 6px;
+            text-align: center;
+            letter-spacing: 0.2px;
+            color: var(--ink);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--dusk);
+            font-size: 0.88rem;
+            margin: 0 0 28px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.78rem;
+            color: var(--dusk);
+            margin-bottom: 6px;
+            margin-top: 16px;
+        }
+
+        input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            padding: 11px 12px;
+            color: var(--ink);
+            font-family: 'Work Sans', sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.15s ease;
+        }
+
+        input:focus {
+            border-color: var(--gold);
+        }
+
+        .error {
+            color: #b2503f;
+            font-size: 0.82rem;
+            margin-top: 12px;
+            min-height: 1.1em;
+        }
+
+        /* the wax seal button — the signature element */
+        .seal-row {
+            display: flex;
+            justify-content: center;
+            margin-top: 28px;
+        }
+
+        .seal {
+            width: 100%;
+            max-width: 220px;
+            height: 48px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--seal-start), var(--seal-end));
+            border: none;
+            color: #1e3019;
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.25);
+            font-family: 'Fraunces', serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            box-shadow: 0 8px 18px -6px rgba(143, 168, 120, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.25);
+            transition: transform 0.12s ease, opacity 0.15s ease;
+        }
+
+        .seal:hover {
+            opacity: 0.88;
+        }
+
+        .seal:active {
+            transform: scale(0.92);
+        }
+
+        .seal:disabled {
+            opacity: 0.6;
+            cursor: default;
+        }
+
+        .switch {
+            text-align: center;
+            margin-top: 22px;
+            font-size: 0.85rem;
+            color: var(--dusk);
+        }
+
+        .switch button {
+            background: none;
+            border: none;
+            color: var(--gold);
+            cursor: pointer;
+            font-size: 0.85rem;
+            text-decoration: underline;
+            padding: 0;
+            font-family: inherit;
+        }
+
+        .welcome {
+            text-align: center;
+        }
+
+        .welcome h1 {
+            margin-bottom: 4px;
+        }
+
+        .welcome p {
+            color: var(--dusk);
+            font-size: 0.9rem;
+        }
+
+        .logout {
+            margin-top: 24px;
+            background: none;
+            border: 1px solid var(--line);
+            color: var(--ink);
+            padding: 10px 18px;
+            border-radius: 14px;
+            cursor: pointer;
+            font-family: 'Work Sans', sans-serif;
+            font-size: 0.85rem;
+        }
+
+        /* ---- Notes area (step 2) ---- */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .top-bar h1 {
+            text-align: left;
+            margin: 0;
+            font-size: 1.3rem;
+        }
+
+        .signed-in-as {
+            color: var(--dusk);
+            font-size: 0.78rem;
+            margin-top: 2px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 80px;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            padding: 11px 12px;
+            color: var(--ink);
+            font-family: 'Work Sans', sans-serif;
+            font-size: 0.92rem;
+            resize: vertical;
+            outline: none;
+        }
+
+        textarea:focus {
+            border-color: var(--gold);
+        }
+
+        .add-btn {
+            margin-top: 10px;
+            background: var(--seal);
+            color: #24331f;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 14px;
+            font-family: 'Work Sans', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .add-btn:disabled {
+            opacity: 0.5;
+            cursor: default;
+        }
+
+        .notes-list {
+            margin-top: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 320px;
+            overflow-y: auto;
+        }
+
+        .note-item {
+            background: rgba(255, 255, 255, 0.55);
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            padding: 12px 14px;
+            position: relative;
+        }
+
+        .note-text {
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            word-break: break-word;
+            margin: 0 0 8px;
+        }
+
+        .note-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--dusk);
+            font-size: 0.72rem;
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            color: #b2503f;
+            cursor: pointer;
+            font-size: 0.72rem;
+            padding: 0;
+            text-decoration: underline;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: var(--dusk);
+            font-size: 0.85rem;
+            padding: 20px 0;
+        }
+
+        /* ---- App frame: header 30% / main 60% (step 3) ---- */
+        .app-frame {
+            display: flex;
+            flex-direction: column;
+            height: 78vh;
+        }
+
+        .app-header {
+            min-height: 30%;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-bottom: 1px solid var(--line);
+            padding-bottom: 12px;
+            margin-bottom: 12px;
+        }
+
+        .app-main {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid var(--line);
+            color: var(--dusk);
+            padding: 7px 14px;
+            border-radius: 14px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-family: 'Work Sans', sans-serif;
+        }
+
+        .tab-btn.active {
+            background: var(--seal);
+            color: #24331f;
+            border-color: var(--seal);
+        }
+
+        .msg-item {
+            background: rgba(255, 255, 255, 0.55);
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            padding: 12px 14px;
+            margin-bottom: 10px;
+        }
+
+        .msg-author {
+            font-size: 0.78rem;
+            color: var(--gold);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .msg-text {
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            word-break: break-word;
+            margin: 0 0 8px;
+        }
+
+        .msg-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .msg-expiry {
+            color: var(--dusk);
+            font-size: 0.7rem;
+        }
+
+        .msg-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .alter-btn {
+            background: none;
+            border: none;
+            color: var(--gold);
+            cursor: pointer;
+            font-size: 0.72rem;
+            padding: 0;
+            text-decoration: underline;
+        }
+
+        /* Star / like button on messages */
+        .like-btn {
+            background: none;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+            transition: transform 0.15s ease;
+        }
+
+        .like-btn:hover {
+            transform: scale(1.25);
+        }
+
+        .like-btn:active {
+            transform: scale(0.9);
+        }
+
+        .composer {
+            margin-top: 12px;
+            flex-shrink: 0;
+        }
+
+        .save-btn {
+            margin-top: 8px;
+            background: var(--seal);
+            color: #24331f;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 14px;
+            font-family: 'Work Sans', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .editing-banner {
+            font-size: 0.75rem;
+            color: var(--gold);
+            margin-top: 6px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="envelope">
+        <div class="flap"></div>
+        <div class="card" id="card">
+            <!-- content injected by JS -->
+        </div>
+    </div>
+
+    <script>
+        // ---- App state ----
+        let currentUser = null;
+        let loading = false;
+        let errorMsg = '';
+
+        // ---- Notes state (step 2) ----
+        let notes = [];          // array of { id, text, author, createdAt }
+        let notesLoaded = false; // have we fetched from storage yet?
+        let notesError = '';
+
+        // ---- Messages state (step 3) ----
+        let activeTab = 'home'; // 'home' | 'notes' | 'messages' | 'photos' | 'settings' | 'reminders'
+        let messages = [];        // array of { id, author, text, createdAt, expiresAt }
+        let messagesLoaded = false;
+        let messagesError = '';
+        let editingMessageId = null; // if set, Save will UPDATE this message instead of creating a new one
+
+        const card = document.getElementById('card');
+
+        // ---- Rendering ----
+        function render() {
+            if (currentUser) {
+                renderApp();
+                return;
+            }
+
+            card.innerHTML = `
+      <h1>Our Space</h1>
+      <div class="subtitle">A private place for the two of you</div>
+
+      <label for="username">Name</label>
+      <input id="username" type="text" autocomplete="off" />
+
+      <label for="password">Password</label>
+      <input id="password" type="password" autocomplete="off" />
+
+      <div class="error" id="errorMsg">${errorMsg}</div>
+
+      <div class="seal-row">
+        <button class="seal" id="submitBtn" ${loading ? 'disabled' : ''}>
+          ${loading ? '...' : 'Unlock'}
+        </button>
+      </div>
+    `;
+
+            document.getElementById('submitBtn').onclick = handleSubmit;
+
+            // allow Enter key to submit
+            card.querySelectorAll('input').forEach(inp => {
+                inp.addEventListener('keydown', e => {
+                    if (e.key === 'Enter') handleSubmit();
+                });
+            });
+        }
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        // ---- Password hashing ----
+        // No longer needed on the client — the server hashes and compares.
+        // Removed: hashPassword(), getUsers(), saveUsers()
+
+        // ---- Submit handler ----
+        // Calls the backend API instead of checking localStorage
+        async function handleSubmit() {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            errorMsg = '';
+
+            if (!username || !password) {
+                errorMsg = 'Please fill in both fields.';
+                render();
+                return;
+            }
+
+            loading = true;
+            render();
+
+            try {
+                const res = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                const data = await res.json();
+
+                if (!res.ok || !data.success) {
+                    errorMsg = data.error || 'Name or password is incorrect.';
+                } else {
+                    currentUser = data.username;
+                    sessionStorage.setItem('currentUser', data.username);
+                    window.location.href = 'main.html';
+                    return; // stop further execution
+                }
+            } catch (e) {
+                errorMsg = 'Something went wrong. Please try again.';
+                console.error(e);
+            }
+
+            loading = false;
+            render();
+        }
+
+
+        // ==== NOTES (step 2) ====
+        // Now backed by the Supabase API instead of localStorage.
+
+        async function loadNotes() {
+            try {
+                const res = await fetch('/api/notes');
+                if (!res.ok) throw new Error('Failed to load notes');
+                notes = await res.json();
+                // Map Supabase column names to the ones our UI expects
+                notes = notes.map(n => ({
+                    id: String(n.id),
+                    text: n.text,
+                    author: n.author,
+                    createdAt: n.created_at
+                }));
+            } catch (e) {
+                console.error('loadNotes:', e);
+                notes = [];
+            }
+            notesLoaded = true;
+        }
+
+        async function addNote(text) {
+            const res = await fetch('/api/notes', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ author: currentUser, text })
+            });
+            if (!res.ok) throw new Error('Failed to add note');
+            // Reload from server to stay in sync
+            await loadNotes();
+        }
+
+        async function deleteNote(id) {
+            const res = await fetch(`/api/notes/${id}`, { method: 'DELETE' });
+            if (!res.ok) throw new Error('Failed to delete note');
+            await loadNotes();
+        }
+
+
+        function formatWhen(iso) {
+            const d = new Date(iso);
+            return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) +
+                ' · ' + d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+        }
+
+        // ==== APP FRAME (step 3): header 30% / main 60%, with tabs ====
+
+        const TAB_LABELS = { home: 'Home', notes: 'Notes', messages: 'Messages', photos: 'Photos', settings: 'Settings', reminders: 'Reminders' };
+
+        async function renderApp() {
+            // Fetch data lazily, once, the first time each tab is needed
+            if (!notesLoaded) await loadNotes();
+            if (!messagesLoaded) await loadMessages();
+
+            card.innerHTML = `
+      <div class="app-frame">
+        <div class="app-header">
+          <div class="top-bar">
+            <div>
+              <h1>Our Space</h1>
+              <div class="signed-in-as">Signed in as ${escapeHtml(currentUser)}</div>
+            </div>
+            <button class="logout" id="logoutBtn">Log out</button>
+          </div>
+          <div class="tabs">
+            ${Object.keys(TAB_LABELS).map(key => `
+              <button class="tab-btn ${activeTab === key ? 'active' : ''}" data-tab="${key}">${TAB_LABELS[key]}</button>
+            `).join('')}
+          </div>
+        </div>
+
+        <div class="app-main" id="appMain">
+          ${contentForActiveTab()}
+        </div>
+      </div>
+    `;
+
+            document.getElementById('logoutBtn').onclick = () => {
+                currentUser = null;
+                render();
+            };
+            document.querySelectorAll('[data-tab]').forEach(btn => {
+                btn.onclick = () => { activeTab = btn.dataset.tab; renderApp(); };
+            });
+            document.querySelectorAll('[data-goto]').forEach(btn => {
+                btn.onclick = () => { activeTab = btn.dataset.goto; renderApp(); };
+            });
+
+            if (activeTab === 'notes') wireNotesTab();
+            else if (activeTab === 'messages') wireMessagesTab();
+        }
+
+        function contentForActiveTab() {
+            switch (activeTab) {
+                case 'home': return homeTabHtml();
+                case 'notes': return notesTabHtml();
+                case 'messages': return messagesTabHtml();
+                default: return stubTabHtml(TAB_LABELS[activeTab]);
+            }
+        }
+
+        // ---- Home page: greeting, quick overview, navigation ----
+        function greetingForNow() {
+            const h = new Date().getHours();
+            if (h < 12) return 'Good morning';
+            if (h < 18) return 'Good afternoon';
+            return 'Good evening';
+        }
+
+        function homeTabHtml() {
+            const activeMessages = messages.filter(m => new Date(m.expiresAt) > new Date());
+            const navItems = [
+                { key: 'notes', label: 'Notes', desc: notes.length + ' saved' },
+                { key: 'messages', label: 'Messages', desc: activeMessages.length + ' active' },
+                { key: 'photos', label: 'Photos', desc: 'coming soon' },
+                { key: 'settings', label: 'Settings', desc: 'coming soon' },
+                { key: 'reminders', label: 'Reminders', desc: 'coming soon' }
+            ];
+            return `
+      <h1 style="font-size:1.2rem;text-align:left;margin-bottom:2px;">${greetingForNow()}, ${escapeHtml(currentUser)}</h1>
+      <p style="color:var(--dusk);font-size:0.85rem;margin-top:0;">Here's your space.</p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px;">
+        ${navItems.map(item => `
+          <button data-goto="${item.key}" style="text-align:left;cursor:pointer;background:rgba(255,255,255,0.55);border:1px solid var(--line, #dbe4c9);border-radius:8px;padding:14px;font-family:'Work Sans',sans-serif;">
+            <div style="font-weight:600;font-size:0.92rem;color:var(--ink);">${item.label}</div>
+            <div style="font-size:0.75rem;color:var(--dusk);margin-top:3px;">${item.desc}</div>
+          </button>
+        `).join('')}
+      </div>
+    `;
+        }
+
+        function stubTabHtml(label) {
+            return `
+      <div class="empty-state" style="padding:40px 0;">
+        <div style="font-family:'Fraunces',serif;font-size:1.1rem;color:var(--ink);margin-bottom:6px;">${escapeHtml(label)}</div>
+        We'll build this together soon.
+      </div>
+    `;
+        }
+
+        // ---- Notes tab (same behavior as step 2, just reused inside the frame) ----
+        function notesTabHtml() {
+            return `
+      <textarea id="noteInput" placeholder="Write something for the two of you..."></textarea>
+      <button class="add-btn" id="addBtn">Save note</button>
+      <div class="error" id="notesError">${notesError}</div>
+
+      <div class="notes-list" id="notesList">
+        ${notes.length === 0
+                    ? `<div class="empty-state">Nothing saved yet — write your first note above.</div>`
+                    : notes.map(n => `
+              <div class="note-item">
+                <p class="note-text">${escapeHtml(n.text)}</p>
+                <div class="note-meta">
+                  <span>${escapeHtml(n.author)} · ${formatWhen(n.createdAt)}</span>
+                  <button class="delete-btn" data-id="${n.id}">delete</button>
+                </div>
+              </div>
+            `).join('')}
+      </div>
+    `;
+        }
+
+        function wireNotesTab() {
+            document.getElementById('addBtn').onclick = async () => {
+                const input = document.getElementById('noteInput');
+                const text = input.value.trim();
+                if (!text) return;
+
+                document.getElementById('addBtn').disabled = true;
+                try {
+                    await addNote(text);
+                    notesError = '';
+                    renderApp();
+                } catch (e) {
+                    notesError = 'Could not save — please try again.';
+                    renderApp();
+                }
+            };
+
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.onclick = async () => {
+                    await deleteNote(btn.dataset.id);
+                    renderApp();
+                };
+            });
+        }
+
+        // ---- Messages tab (step 3) ----
+        const WEEK_MS = 7 * 24 * 60 * 60 * 1000; // one week, in milliseconds
+
+        // ---- Starred helpers (shared with main.html via localStorage) ----
+        function getStarredItems() {
+            try { return JSON.parse(localStorage.getItem('starredItems') || '[]'); } catch { return []; }
+        }
+
+        function saveStarredItems(arr) {
+            localStorage.setItem('starredItems', JSON.stringify(arr));
+        }
+
+        function isLiked(messageId) {
+            return getStarredItems().some(s => s.messageId === messageId);
+        }
+
+        function toggleLike(msg) {
+            let arr = getStarredItems();
+            const idx = arr.findIndex(s => s.messageId === msg.id);
+            if (idx !== -1) {
+                arr.splice(idx, 1); // un-like
+            } else {
+                arr.unshift({
+                    messageId: msg.id,
+                    text: msg.text,
+                    author: msg.author,
+                    likedAt: new Date().toISOString()
+                });
+            }
+            saveStarredItems(arr);
+        }
+
+        function messagesTabHtml() {
+            const visible = messages.filter(m => new Date(m.expiresAt) > new Date());
+            return `
+      <textarea id="msgInput" placeholder="Write a private message...">${editingMessageId ? escapeHtml(messages.find(m => m.id === editingMessageId)?.text || '') : ''}</textarea>
+      ${editingMessageId ? `<div class="editing-banner">Editing a message — Save to update it.</div>` : ''}
+      <button class="save-btn" id="saveMsgBtn">${editingMessageId ? 'Update message' : 'Save message'}</button>
+      <div class="error" id="messagesError">${messagesError}</div>
+
+      <div class="notes-list" id="messagesList">
+        ${visible.length === 0
+                    ? `<div class="empty-state">No messages yet — write one above.</div>`
+                    : visible.map(m => `
+              <div class="msg-item">
+                <div class="msg-author">${escapeHtml(m.author)}</div>
+                <p class="msg-text">${escapeHtml(m.text)}</p>
+                <div class="msg-footer">
+                  <span class="msg-expiry">expires ${formatWhen(m.expiresAt)}</span>
+                  <div class="msg-actions">
+                    <button class="like-btn" data-id="${m.id}" data-action="like"
+                      title="${isLiked(m.id) ? 'Remove from favourites' : 'Add to favourites'}">
+                      ${isLiked(m.id) ? '⭐' : '☆'}
+                    </button>
+                    <button class="alter-btn" data-id="${m.id}" data-action="alter">alter</button>
+                    <button class="delete-btn" data-id="${m.id}" data-action="delete">delete</button>
+                  </div>
+                </div>
+              </div>
+            `).join('')}
+      </div>
+    `;
+        }
+
+        function wireMessagesTab() {
+            document.getElementById('saveMsgBtn').onclick = async () => {
+                const input = document.getElementById('msgInput');
+                const text = input.value.trim();
+                if (!text) return;
+
+                document.getElementById('saveMsgBtn').disabled = true;
+                try {
+                    if (editingMessageId) {
+                        await updateMessage(editingMessageId, text);
+                        editingMessageId = null;
+                    } else {
+                        await publishMessage(text);
+                    }
+                    messagesError = '';
+                    renderApp();
+                } catch (e) {
+                    messagesError = 'Could not save — please try again.';
+                    renderApp();
+                }
+            };
+
+            // ⭐ Like / unlike — saves to starredItems for main.html
+            document.querySelectorAll('[data-action="like"]').forEach(btn => {
+                btn.onclick = () => {
+                    const msg = messages.find(m => m.id === btn.dataset.id);
+                    if (!msg) return;
+                    toggleLike(msg);
+                    // Re-render just this button to give instant feedback
+                    const liked = isLiked(msg.id);
+                    btn.textContent = liked ? '⭐' : '☆';
+                    btn.title = liked ? 'Remove from favourites' : 'Add to favourites';
+                };
+            });
+
+            document.querySelectorAll('[data-action="alter"]').forEach(btn => {
+                btn.onclick = () => {
+                    editingMessageId = btn.dataset.id;
+                    renderApp();
+                };
+            });
+
+            document.querySelectorAll('[data-action="delete"]').forEach(btn => {
+                btn.onclick = async () => {
+                    await deleteMessage(btn.dataset.id);
+                    renderApp();
+                };
+            });
+        }
+
+        // Now backed by the Supabase API instead of localStorage.
+        async function loadMessages() {
+            try {
+                const res = await fetch('/api/messages');
+                if (!res.ok) throw new Error('Failed to load messages');
+                messages = await res.json();
+                // Map Supabase column names to the ones our UI expects
+                messages = messages.map(m => ({
+                    id: String(m.id),
+                    author: m.author,
+                    text: m.text,
+                    createdAt: m.created_at,
+                    expiresAt: m.expires_at
+                }));
+            } catch (e) {
+                console.error('loadMessages:', e);
+                messages = [];
+            }
+            messagesLoaded = true;
+        }
+
+        async function publishMessage(text) {
+            const res = await fetch('/api/messages', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ author: currentUser, text })
+            });
+            if (!res.ok) throw new Error('Failed to create message');
+            await loadMessages();
+        }
+
+        async function updateMessage(id, text) {
+            const res = await fetch(`/api/messages/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text })
+            });
+            if (!res.ok) throw new Error('Failed to update message');
+            await loadMessages();
+        }
+
+        async function deleteMessage(id) {
+            const res = await fetch(`/api/messages/${id}`, { method: 'DELETE' });
+            if (!res.ok) throw new Error('Failed to delete message');
+            await loadMessages();
+        }
+
+        // ---- Startup ----
+        // Seeding is handled by the server on startup, so we just render.
+        render();
+
+    </script>
+
+</body>
+
+</html>

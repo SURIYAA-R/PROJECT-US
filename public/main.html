@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Space — Home</title>
+  <meta name="description" content="A private space for the two of you." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Poppins:wght@300;400;500;600&display=swap"
+    rel="stylesheet" />
+
+  <style>
+    /* ============================
+       CSS CUSTOM PROPERTIES (colour palette)
+    ============================ */
+    :root {
+      /* Backgrounds */
+      --bg: #f8f5ec;
+      --bg-start: #eef0e2;
+      --bg-end: #f8f5ec;
+      --bg-dark: #1a1e16;
+
+      /* Glass card surface */
+      --surface: rgba(255, 255, 255, 0.5);
+      --surface-dark: rgba(30, 36, 26, 0.75);
+
+      /* Text */
+      --ink: #33422f;         /* deep sage-charcoal */
+      --ink-dark: #e8eed8;
+      --dusk: #8a9683;        /* dusty sage-grey / muted */
+      --dusk-dark: #6b7a60;
+
+      /* Buttons / accents */
+      --seal-start: #c3d6ac;
+      --seal-end: #8fa878;
+      --seal: #a9d6a0;
+
+      /* Highlight / focus */
+      --gold: #a68a52;
+
+      /* Borders */
+      --line: #dde3cd;
+      --line-dark: #2f3a28;
+
+      /* Sizes */
+      --header-h: 30vh;
+      --menu-width: 280px;
+      --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Dark theme overrides */
+    [data-theme="dark"] {
+      --bg: var(--bg-dark);
+      --bg-start: #161a12;
+      --bg-end: #1a1e16;
+      --surface: var(--surface-dark);
+      --ink: var(--ink-dark);
+      --dusk: var(--dusk-dark);
+      --line: var(--line-dark);
+    }
+
+    /* ============================
+       RESET & BASE
+    ============================ */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      background: radial-gradient(ellipse at top, var(--bg-start) 0%, var(--bg-end) 65%);
+      color: var(--ink);
+      min-height: 100vh;
+      transition: background var(--transition), color var(--transition);
+      overflow-x: hidden;
+    }
+
+    /* ============================
+       BACKGROUND IMAGE LAYER
+    ============================ */
+    #bg-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+      pointer-events: none;
+    }
+
+    #bg-layer.has-image { opacity: 1; }
+
+    /* ============================
+       TOP HEADER — 30vh, centers content, vanishes on scroll
+    ============================ */
+    #top-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: var(--header-h);
+      background: linear-gradient(160deg, rgba(195, 214, 172, 0.72) 0%, rgba(246, 244, 236, 0.62) 100%);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      padding: 18px 24px 22px;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.4s ease,
+        background var(--transition);
+      will-change: transform, opacity;
+    }
+
+    [data-theme="dark"] #top-header {
+      background: linear-gradient(160deg, rgba(30, 45, 22, 0.82) 0%, rgba(20, 26, 16, 0.72) 100%);
+    }
+
+    #top-header.hidden {
+      transform: translateY(-100%);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* Top row: SJ left, hamburger right */
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    /* SJ monogram */
+    .monogram {
+      font-family: 'Fraunces', serif;
+      font-size: 1.55rem;
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: 1px;
+      line-height: 1;
+      user-select: none;
+      transition: color var(--transition);
+    }
+
+    /* Hamburger button */
+    #menuBtn {
+      background: rgba(255, 255, 255, 0.45);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      width: 42px;
+      height: 42px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      transition: background var(--transition), transform 0.2s ease;
+    }
+
+    #menuBtn:hover { background: rgba(255, 255, 255, 0.7); transform: scale(1.05); }
+    #menuBtn:active { transform: scale(0.93); }
+
+    .hamburger-line {
+      width: 20px;
+      height: 2px;
+      background: var(--ink);
+      border-radius: 2px;
+      transition: background var(--transition);
+    }
+
+    /* Centered message area */
+    .header-message {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .message-text {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(0.85rem, 2vw, 1.05rem);
+      color: var(--ink);
+      opacity: 0.82;
+      line-height: 1.7;
+      font-style: italic;
+      max-width: 500px;
+      text-align: center;
+      transition: color var(--transition);
+    }
+
+    /* ============================
+       SLIDE-OUT MENU DRAWER
+    ============================ */
+    #menuOverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(30, 40, 22, 0.35);
+      backdrop-filter: blur(4px);
+      z-index: 300;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    #menuOverlay.open { opacity: 1; pointer-events: all; }
+
+    #menuDrawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: var(--menu-width);
+      height: 100vh;
+      background: var(--bg);
+      border-left: 1px solid var(--line);
+      z-index: 400;
+      transform: translateX(100%);
+      transition: transform var(--transition), background var(--transition);
+      display: flex;
+      flex-direction: column;
+      padding: 28px 24px;
+      box-shadow: -12px 0 40px rgba(0, 0, 0, 0.12);
+    }
+
+    #menuDrawer.open { transform: translateX(0); }
+
+    .drawer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+
+    .drawer-title {
+      font-family: 'Fraunces', serif;
+      font-size: 1.2rem;
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    #closeMenuBtn {
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+      color: var(--dusk);
+      line-height: 1;
+      padding: 4px;
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    #closeMenuBtn:hover { color: var(--ink); transform: rotate(90deg); }
+
+    .menu-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 13px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0.92rem;
+      color: var(--ink);
+      font-weight: 500;
+      border: 1px solid transparent;
+      transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+      user-select: none;
+      position: relative;
+    }
+
+    .menu-item:hover { background: rgba(195, 214, 172, 0.3); border-color: var(--line); transform: translateX(4px); }
+    .menu-item:active { transform: translateX(4px) scale(0.97); }
+
+    .menu-icon { font-size: 1.1rem; width: 24px; text-align: center; }
+
+    .theme-toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 13px 16px;
+      border-radius: 10px;
+      border: 1px solid transparent;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .theme-toggle-row:hover { background: rgba(195, 214, 172, 0.3); border-color: var(--line); }
+
+    .theme-label {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .toggle-switch { position: relative; width: 44px; height: 24px; }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+
+    .toggle-track {
+      position: absolute;
+      inset: 0;
+      background: var(--line);
+      border-radius: 24px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .toggle-track::before {
+      content: '';
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      top: 3px;
+      left: 3px;
+      border-radius: 50%;
+      background: white;
+      transition: transform 0.3s ease;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    input:checked + .toggle-track { background: var(--seal); }
+    input:checked + .toggle-track::before { transform: translateX(20px); }
+
+    .menu-divider { height: 1px; background: var(--line); margin: 10px 0; transition: background var(--transition); }
+    .drawer-footer { margin-top: auto; }
+
+    #logoutBtn {
+      width: 100%;
+      padding: 12px;
+      background: none;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      color: #b2503f;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+
+    #logoutBtn:hover { background: rgba(178, 80, 63, 0.08); border-color: #b2503f; }
+
+    /* ============================
+       BOTTOM SECTION — 70vh+
+    ============================ */
+    #bottom-section {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 48px 24px 0;
+    }
+
+    /* Section heading */
+    .section-heading {
+      font-family: 'Fraunces', serif;
+      font-size: 1.1rem;
+      color: var(--dusk);
+      letter-spacing: 0.5px;
+      margin-bottom: 36px;
+      text-align: center;
+      transition: color var(--transition);
+    }
+
+    /* ============================
+       TWO PORTRAIT BOXES (Flexbox)
+    ============================ */
+    .boxes-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+      flex-wrap: wrap; /* stack vertically on small screens */
+    }
+
+    /* Each portrait box */
+    .box-card {
+      width: 220px;
+      height: 350px;
+      background: linear-gradient(145deg, var(--seal-start), var(--seal-end));
+      border-radius: 10px;
+      box-shadow: 0 8px 28px -8px rgba(143, 168, 120, 0.5),
+        0 2px 8px rgba(0, 0, 0, 0.08);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+    }
+
+    /* Shimmer on hover */
+    .box-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.22) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .box-card:hover::before { opacity: 1; }
+    .box-card:hover { transform: translateY(-6px) scale(1.02); box-shadow: 0 18px 38px -10px rgba(143, 168, 120, 0.6), 0 4px 12px rgba(0, 0, 0, 0.1); }
+    .box-card:active { transform: translateY(-2px) scale(0.99); }
+
+    .box-icon { font-size: 2.4rem; line-height: 1; filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15)); }
+
+    .box-label {
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #ffffff;
+      letter-spacing: 0.4px;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.18);
+    }
+
+    .box-sublabel {
+      font-size: 0.72rem;
+      color: rgba(255, 255, 255, 0.80);
+      font-weight: 400;
+      text-align: center;
+      padding: 0 16px;
+    }
+
+    /* ============================
+       STARRED / COT BOX
+    ============================ */
+    .starred-section {
+      width: 100%;
+      max-width: 480px;
+      margin-top: 36px;
+    }
+
+    .starred-heading {
+      font-family: 'Fraunces', serif;
+      font-size: 1rem;
+      color: var(--dusk);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .starred-box {
+      width: 100%;
+      height: 300px;
+      background: var(--surface);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      box-shadow: 0 8px 28px -8px rgba(143, 168, 120, 0.2),
+        0 2px 8px rgba(0, 0, 0, 0.06);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Scrollable list */
+    .starred-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .starred-list::-webkit-scrollbar { width: 4px; }
+    .starred-list::-webkit-scrollbar-track { background: transparent; }
+    .starred-list::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; }
+
+    .starred-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px 14px;
+      background: rgba(255, 255, 255, 0.55);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      animation: fadeSlide 0.25s ease;
+    }
+
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .starred-star { font-size: 1.1rem; flex-shrink: 0; }
+
+    .starred-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .starred-text {
+      font-size: 0.88rem;
+      color: var(--ink);
+      line-height: 1.5;
+      word-break: break-word;
+    }
+
+    .starred-meta {
+      font-size: 0.70rem;
+      color: var(--dusk);
+      display: flex;
+      gap: 6px;
+    }
+
+    .starred-author { color: var(--gold); font-weight: 600; }
+
+    .starred-delete {
+      background: none;
+      border: none;
+      color: var(--dusk);
+      cursor: pointer;
+      font-size: 0.82rem;
+      padding: 0;
+      flex-shrink: 0;
+      opacity: 0.55;
+      transition: opacity 0.2s ease, color 0.2s ease;
+    }
+
+    .starred-delete:hover { opacity: 1; color: #b2503f; }
+
+    .starred-empty {
+      text-align: center;
+      color: var(--dusk);
+      font-size: 0.82rem;
+      padding: 32px 16px;
+      font-style: italic;
+      line-height: 1.6;
+    }
+
+    /* ============================
+       FOOTER
+    ============================ */
+    footer {
+      position: relative;
+      z-index: 1;
+      margin-top: 60px;
+      width: 100%;
+      background: var(--surface);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-top: 1px solid var(--line);
+      padding: 40px 48px 28px;
+      transition: background var(--transition);
+    }
+
+    /* Three-column grid: left / center / right */
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 32px 24px;
+      align-items: start;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* ---- Left column — names ---- */
+    .footer-names {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .footer-name-line {
+      font-size: 0.82rem;
+      color: var(--dusk);
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+
+    .footer-name-line strong {
+      color: var(--ink);
+      font-weight: 600;
+      font-size: 0.88rem;
+    }
+
+    /* ---- Center column — quote ---- */
+    .footer-quote {
+      grid-column: 2;
+      grid-row: 1;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .quote-mark {
+      font-family: 'Fraunces', serif;
+      font-size: 3rem;
+      color: var(--seal-end);
+      line-height: 0.6;
+      opacity: 0.7;
+    }
+
+    .quote-text {
+      font-family: 'Fraunces', serif;
+      font-size: 0.92rem;
+      font-style: italic;
+      color: var(--ink);
+      line-height: 1.7;
+      opacity: 0.85;
+    }
+
+    /* ---- Right column — love message ---- */
+    .footer-message {
+      grid-column: 3;
+      grid-row: 1;
+      text-align: right;
+    }
+
+    .footer-msg-text {
+      font-family: 'Fraunces', serif;
+      font-size: 0.88rem;
+      font-style: italic;
+      color: var(--gold);
+      line-height: 1.7;
+    }
+
+    /* ---- Declaration — full width, bottom ---- */
+    .footer-declaration {
+      grid-column: 1 / -1;
+      grid-row: 2;
+      text-align: center;
+      padding-top: 20px;
+      border-top: 1px solid var(--line);
+    }
+
+    .footer-decl-text {
+      font-family: 'Fraunces', serif;
+      font-size: 0.82rem;
+      color: var(--dusk);
+      font-style: italic;
+      letter-spacing: 0.3px;
+    }
+
+    /* ============================
+       MODAL
+    ============================ */
+    #modalOverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(30, 40, 22, 0.4);
+      backdrop-filter: blur(6px);
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      padding: 24px;
+    }
+
+    #modalOverlay.open { opacity: 1; pointer-events: all; }
+
+    .modal-box {
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 32px 28px;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 24px 60px -16px rgba(0, 0, 0, 0.25);
+      transition: background var(--transition);
+    }
+
+    .modal-title {
+      font-family: 'Fraunces', serif;
+      font-size: 1.2rem;
+      color: var(--ink);
+      margin-bottom: 20px;
+    }
+
+    .modal-label {
+      display: block;
+      font-size: 0.78rem;
+      color: var(--dusk);
+      margin-bottom: 6px;
+      margin-top: 14px;
+    }
+
+    .modal-input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.6);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 11px 12px;
+      color: var(--ink);
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.92rem;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+
+    .modal-input:focus { border-color: var(--gold); }
+
+    .modal-error {
+      color: #b2503f;
+      font-size: 0.78rem;
+      min-height: 1.1em;
+      margin-top: 10px;
+    }
+
+    .modal-actions { display: flex; gap: 10px; margin-top: 22px; }
+
+    .modal-btn {
+      flex: 1;
+      padding: 11px;
+      border-radius: 10px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: opacity 0.2s ease, transform 0.15s ease;
+      border: none;
+    }
+
+    .modal-btn:active { transform: scale(0.96); }
+
+    .modal-btn.primary {
+      background: linear-gradient(135deg, var(--seal-start), var(--seal-end));
+      color: #1e3019;
+    }
+
+    .modal-btn.secondary { background: none; border: 1px solid var(--line); color: var(--ink); }
+
+    /* ============================
+       RESPONSIVE
+    ============================ */
+    @media (max-width: 768px) {
+      .boxes-container { flex-direction: column; align-items: center; }
+      .starred-section { max-width: 100%; }
+
+      #top-header { padding: 14px 16px 18px; }
+      .monogram { font-size: 1.3rem; }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+      }
+
+      .footer-names,
+      .footer-quote,
+      .footer-message { grid-column: 1; text-align: left; }
+      .footer-message { text-align: left; }
+      .footer-quote { align-items: flex-start; }
+      .footer-declaration { grid-column: 1; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Background image layer -->
+  <div id="bg-layer"></div>
+
+  <!-- ============================
+       TOP HEADER (30vh)
+  ============================ -->
+  <header id="top-header">
+    <!-- Top row: SJ left | hamburger right -->
+    <div class="header-row">
+      <div class="monogram">SJ</div>
+
+      <button id="menuBtn" aria-label="Open menu" aria-expanded="false">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+    </div>
+
+    <!-- Centered message placeholder -->
+    <div class="header-message">
+      <p class="message-text" id="headerMessage">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Quisque vehicula felis vel eros malesuada, nec tempus urna tincidunt.
+        Nulla facilisi — sed tristique ligula nec sapien ullamcorper.
+      </p>
+    </div>
+  </header>
+
+  <!-- ============================
+       MENU OVERLAY + DRAWER
+  ============================ -->
+  <div id="menuOverlay" role="presentation"></div>
+
+  <nav id="menuDrawer" aria-label="Settings menu" aria-hidden="true">
+    <div class="drawer-header">
+      <span class="drawer-title">Settings</span>
+      <button id="closeMenuBtn" aria-label="Close menu">&#x2715;</button>
+    </div>
+
+    <ul class="menu-list" role="list">
+
+      <!-- 1. Change Password -->
+      <li class="menu-item" id="menuChangePassword" role="button" tabindex="0">
+        <span class="menu-icon">🔑</span>
+        Change Password
+      </li>
+
+      <!-- 2. Change Username -->
+      <li class="menu-item" id="menuChangeUsername" role="button" tabindex="0">
+        <span class="menu-icon">✏️</span>
+        Change Username
+      </li>
+
+      <div class="menu-divider"></div>
+
+      <!-- 3. Change Background Image -->
+      <li class="menu-item" id="menuChangeBg" role="button" tabindex="0">
+        <span class="menu-icon">🖼️</span>
+        Change Background
+        <input type="file" id="bgFileInput" accept="image/*"
+          style="position:absolute;opacity:0;width:0;height:0;" />
+      </li>
+
+      <div class="menu-divider"></div>
+
+      <!-- 4. Light / Dark theme -->
+      <li>
+        <div class="theme-toggle-row">
+          <span class="theme-label">
+            <span class="menu-icon">🌙</span>
+            Dark Mode
+          </span>
+          <label class="toggle-switch" aria-label="Toggle dark mode">
+            <input type="checkbox" id="themeToggle" />
+            <span class="toggle-track"></span>
+          </label>
+        </div>
+      </li>
+
+    </ul>
+
+    <div class="drawer-footer">
+      <button id="logoutBtn">Log out</button>
+    </div>
+  </nav>
+
+  <!-- ============================
+       BOTTOM SECTION (70vh+)
+  ============================ -->
+  <main id="bottom-section">
+
+    <p class="section-heading">Your shared space</p>
+
+    <!-- Two portrait boxes side by side -->
+    <div class="boxes-container">
+
+      <!-- Letters box -->
+      <a href="letters.html" id="lettersLink" style="text-decoration:none;color:inherit;">
+        <div class="box-card" id="lettersBox" role="button" tabindex="0" aria-label="Open Letters">
+          <span class="box-icon">💌</span>
+          <span class="box-label">Letters</span>
+          <span class="box-sublabel">Words just for you</span>
+        </div>
+      </a>
+
+      <!-- Album box -->
+      <div class="box-card" id="albumBox" role="button" tabindex="0" aria-label="Open Album">
+        <span class="box-icon">📷</span>
+        <span class="box-label">Album</span>
+        <span class="box-sublabel">Moments we have kept</span>
+      </div>
+
+    </div>
+
+    <!-- ============================
+         STARRED / COT BOX
+         (liked messages from the Letters/Messages tab)
+    ============================ -->
+    <div class="starred-section">
+      <div class="starred-heading">
+        <span>⭐</span>
+        <span>Starred &amp; Cot — saved from Letters</span>
+      </div>
+
+      <div class="starred-box" id="starredBox">
+        <!-- List populated by JS from localStorage.starredItems -->
+        <div class="starred-list" id="starredList">
+          <div class="starred-empty" id="starredEmpty">
+            Nothing starred yet.<br />
+            Open a message in Letters and tap ☆ to save it here forever.
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ============================
+       FOOTER
+  ============================ -->
+  <footer>
+    <div class="footer-grid">
+
+      <!-- Left: names -->
+      <div class="footer-names">
+        <div class="footer-name-line">him &nbsp;<strong>Eren</strong></div>
+        <div class="footer-name-line">her &nbsp;&nbsp;<strong>Mikasa</strong></div>
+        <div class="footer-name-line">us &nbsp;&nbsp;&nbsp;<strong>Mikasa Eren</strong></div>
+      </div>
+
+      <!-- Center: quote -->
+      <div class="footer-quote">
+        <span class="quote-mark">"</span>
+        <p class="quote-text">
+          In the quiet spaces between heartbeats,<br />
+          you live — endlessly, effortlessly.
+        </p>
+        <span class="quote-mark" style="transform:rotate(180deg);display:block;">"</span>
+      </div>
+
+      <!-- Right: love message -->
+      <div class="footer-message">
+        <p class="footer-msg-text">
+          Hey mere pyaar…<br />
+          Mera life ka pyaar.
+        </p>
+      </div>
+
+      <!-- Declaration — full-width bottom row -->
+      <div class="footer-declaration">
+        <p class="footer-decl-text">
+          Lorem ipsum dolor sit amet — consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        </p>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ============================
+       MODAL (shared)
+  ============================ -->
+  <div id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-box">
+      <div class="modal-title" id="modalTitle">Modal</div>
+      <div id="modalBody"></div>
+      <div class="modal-error" id="modalError"></div>
+      <div class="modal-actions">
+        <button class="modal-btn secondary" id="modalCancel">Cancel</button>
+        <button class="modal-btn primary" id="modalSave">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ============================
+    // Auth guard
+    // ============================
+    const currentUser = sessionStorage.getItem('currentUser');
+    if (!currentUser) {
+      window.location.replace('login.html');
+    }
+
+    // ============================
+    // Scroll: hide/show header
+    // ============================
+    const header = document.getElementById('top-header');
+    let lastScrollY = 0;
+    let ticking = false;
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const scrollY = window.scrollY;
+          if (scrollY > 60 && scrollY > lastScrollY) {
+            header.classList.add('hidden');
+          } else {
+            header.classList.remove('hidden');
+          }
+          lastScrollY = scrollY;
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+
+    // ============================
+    // Menu drawer
+    // ============================
+    const menuBtn     = document.getElementById('menuBtn');
+    const closeMenuBtn = document.getElementById('closeMenuBtn');
+    const menuOverlay = document.getElementById('menuOverlay');
+    const menuDrawer  = document.getElementById('menuDrawer');
+
+    function openMenu() {
+      menuDrawer.classList.add('open');
+      menuOverlay.classList.add('open');
+      menuDrawer.setAttribute('aria-hidden', 'false');
+      menuBtn.setAttribute('aria-expanded', 'true');
+      closeMenuBtn.focus();
+    }
+
+    function closeMenu() {
+      menuDrawer.classList.remove('open');
+      menuOverlay.classList.remove('open');
+      menuDrawer.setAttribute('aria-hidden', 'true');
+      menuBtn.setAttribute('aria-expanded', 'false');
+    }
+
+    menuBtn.addEventListener('click', openMenu);
+    closeMenuBtn.addEventListener('click', closeMenu);
+    menuOverlay.addEventListener('click', closeMenu);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+
+    // ============================
+    // Logout
+    // ============================
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      sessionStorage.removeItem('currentUser');
+      window.location.replace('login.html');
+    });
+
+    // ============================
+    // Theme toggle
+    // ============================
+    const themeToggle = document.getElementById('themeToggle');
+    const savedTheme  = localStorage.getItem('theme') || 'light';
+    if (savedTheme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      themeToggle.checked = true;
+    }
+
+    themeToggle.addEventListener('change', () => {
+      const dark = themeToggle.checked;
+      document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+      localStorage.setItem('theme', dark ? 'dark' : 'light');
+    });
+
+    // ============================
+    // Background image
+    // ============================
+    const bgLayer    = document.getElementById('bg-layer');
+    const bgFileInput = document.getElementById('bgFileInput');
+    const savedBg    = localStorage.getItem('bgImage');
+    if (savedBg) {
+      bgLayer.style.backgroundImage = `url(${savedBg})`;
+      bgLayer.classList.add('has-image');
+    }
+
+    document.getElementById('menuChangeBg').addEventListener('click', () => bgFileInput.click());
+
+    bgFileInput.addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        const dataUrl = ev.target.result;
+        bgLayer.style.backgroundImage = `url(${dataUrl})`;
+        bgLayer.classList.add('has-image');
+        localStorage.setItem('bgImage', dataUrl);
+      };
+      reader.readAsDataURL(file);
+      closeMenu();
+    });
+
+    // ============================
+    // Starred / Cot — reads liked messages from localStorage.starredItems
+    // (written by login.html when user stars a message)
+    // ============================
+    function getStarredItems() {
+      try { return JSON.parse(localStorage.getItem('starredItems') || '[]'); } catch { return []; }
+    }
+
+    function saveStarredItems(arr) {
+      localStorage.setItem('starredItems', JSON.stringify(arr));
+    }
+
+    function formatDate(iso) {
+      const d = new Date(iso);
+      return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) +
+        ' · ' + d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+    }
+
+    function renderStarred() {
+      const list  = document.getElementById('starredList');
+      const items = getStarredItems();
+
+      if (items.length === 0) {
+        list.innerHTML = `
+          <div class="starred-empty">
+            Nothing starred yet.<br />
+            Open a message in Letters and tap ☆ to save it here forever.
+          </div>`;
+        return;
+      }
+
+      list.innerHTML = items.map((item, idx) => `
+        <div class="starred-item" data-idx="${idx}">
+          <span class="starred-star">⭐</span>
+          <div class="starred-body">
+            <span class="starred-text">${escapeHtml(item.text)}</span>
+            <div class="starred-meta">
+              <span class="starred-author">${escapeHtml(item.author || '')}</span>
+              <span>·</span>
+              <span>${formatDate(item.likedAt)}</span>
+            </div>
+          </div>
+          <button class="starred-delete" data-idx="${idx}" aria-label="Remove from starred">✕</button>
+        </div>
+      `).join('');
+
+      list.querySelectorAll('.starred-delete').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const arr = getStarredItems();
+          arr.splice(parseInt(btn.dataset.idx), 1);
+          saveStarredItems(arr);
+          renderStarred();
+        });
+      });
+    }
+
+    renderStarred();
+
+    // Re-render starred list when window regains focus
+    // (in case user just starred something in login.html in another tab)
+    window.addEventListener('focus', renderStarred);
+
+    // ============================
+    // Modal helpers
+    // ============================
+    const modalOverlay = document.getElementById('modalOverlay');
+    const modalTitle   = document.getElementById('modalTitle');
+    const modalBody    = document.getElementById('modalBody');
+    const modalError   = document.getElementById('modalError');
+    const modalSave    = document.getElementById('modalSave');
+    const modalCancel  = document.getElementById('modalCancel');
+
+    function openModal(title, bodyHtml, onSave) {
+      modalTitle.textContent = title;
+      modalBody.innerHTML    = bodyHtml;
+      modalError.textContent = '';
+      modalSave.onclick      = onSave;
+      modalOverlay.classList.add('open');
+      const first = modalBody.querySelector('input');
+      if (first) setTimeout(() => first.focus(), 80);
+      closeMenu();
+    }
+
+    function closeModal() { modalOverlay.classList.remove('open'); }
+
+    modalCancel.addEventListener('click', closeModal);
+    modalOverlay.addEventListener('click', e => { if (e.target === modalOverlay) closeModal(); });
+
+    // ============================
+    // 1. Change Password
+    // ============================
+    document.getElementById('menuChangePassword').addEventListener('click', () => {
+      openModal('Change Password', `
+        <label class="modal-label" for="oldPass">Current Password</label>
+        <input class="modal-input" type="password" id="oldPass" autocomplete="current-password" />
+        <label class="modal-label" for="newPass">New Password</label>
+        <input class="modal-input" type="password" id="newPass" autocomplete="new-password" />
+        <label class="modal-label" for="confirmPass">Confirm New Password</label>
+        <input class="modal-input" type="password" id="confirmPass" autocomplete="new-password" />
+      `, async () => {
+        modalError.textContent = '';
+        const oldPass     = document.getElementById('oldPass').value;
+        const newPass     = document.getElementById('newPass').value;
+        const confirmPass = document.getElementById('confirmPass').value;
+
+        if (!oldPass || !newPass || !confirmPass) { modalError.textContent = 'Please fill in all fields.'; return; }
+        if (newPass !== confirmPass) { modalError.textContent = 'New passwords do not match.'; return; }
+        if (newPass.length < 4) { modalError.textContent = 'Password must be at least 4 characters.'; return; }
+
+        const users   = JSON.parse(localStorage.getItem('users') || '{}');
+        const oldHash = await hashPassword(oldPass);
+        if (users[currentUser] !== oldHash) { modalError.textContent = 'Current password is incorrect.'; return; }
+
+        users[currentUser] = await hashPassword(newPass);
+        localStorage.setItem('users', JSON.stringify(users));
+        closeModal();
+        showToast('Password updated ✓');
+      });
+    });
+
+    // ============================
+    // 2. Change Username
+    // ============================
+    document.getElementById('menuChangeUsername').addEventListener('click', () => {
+      openModal('Change Username', `
+        <label class="modal-label" for="newUsername">New Username</label>
+        <input class="modal-input" type="text" id="newUsername" autocomplete="off"
+          value="${escapeHtml(currentUser)}" />
+        <label class="modal-label" for="passForUser">Password (to confirm)</label>
+        <input class="modal-input" type="password" id="passForUser" autocomplete="current-password" />
+      `, async () => {
+        modalError.textContent = '';
+        const newUsername = document.getElementById('newUsername').value.trim();
+        const pass        = document.getElementById('passForUser').value;
+
+        if (!newUsername || !pass) { modalError.textContent = 'Please fill in all fields.'; return; }
+
+        const users = JSON.parse(localStorage.getItem('users') || '{}');
+        const hash  = await hashPassword(pass);
+        if (users[currentUser] !== hash) { modalError.textContent = 'Password is incorrect.'; return; }
+        if (users[newUsername] && newUsername !== currentUser) { modalError.textContent = 'That username is already taken.'; return; }
+
+        users[newUsername] = users[currentUser];
+        if (newUsername !== currentUser) delete users[currentUser];
+        localStorage.setItem('users', JSON.stringify(users));
+        sessionStorage.setItem('currentUser', newUsername);
+        closeModal();
+        showToast('Username updated ✓');
+        setTimeout(() => window.location.reload(), 900);
+      });
+    });
+
+    // ============================
+    // Helpers
+    // ============================
+    async function hashPassword(password) {
+      const enc = new TextEncoder().encode(password);
+      const buf = await crypto.subtle.digest('SHA-256', enc);
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    function escapeHtml(str) {
+      const d = document.createElement('div');
+      d.textContent = str;
+      return d.innerHTML;
+    }
+
+    function showToast(msg) {
+      const t = document.createElement('div');
+      t.textContent = msg;
+      Object.assign(t.style, {
+        position: 'fixed', bottom: '28px', left: '50%',
+        transform: 'translateX(-50%) translateY(20px)',
+        background: '#33422f', color: '#eef0e2',
+        padding: '12px 22px', borderRadius: '20px',
+        fontSize: '0.86rem', fontFamily: "'Poppins', sans-serif",
+        zIndex: '1000', opacity: '0',
+        transition: 'opacity 0.3s ease, transform 0.3s ease',
+        pointerEvents: 'none', whiteSpace: 'nowrap',
+      });
+      document.body.appendChild(t);
+      requestAnimationFrame(() => {
+        t.style.opacity = '1';
+        t.style.transform = 'translateX(-50%) translateY(0)';
+      });
+      setTimeout(() => {
+        t.style.opacity = '0';
+        t.style.transform = 'translateX(-50%) translateY(20px)';
+        setTimeout(() => t.remove(), 350);
+      }, 2400);
+    }
+
+    // Keyboard support for menu items
+    document.querySelectorAll('.menu-item[role="button"]').forEach(el => {
+      el.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); el.click(); }
+      });
+    });
+  </script>
+
+</body>
+
+</html>

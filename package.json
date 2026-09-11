@@ -1,0 +1,13 @@
+{
+  "name": "our-space",
+  "version": "1.0.0",
+  "description": "A private space for two people to share notes and messages.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node --env-file=.env server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "@supabase/supabase-js": "^2.45.0"
+  }
+}
