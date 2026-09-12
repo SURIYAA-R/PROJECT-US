@@ -686,8 +686,9 @@
       return div.innerHTML;
     }
 
-    // Load letters on page load
+    // Load letters on page load and auto-refresh every 5 seconds for real-time sharing across devices
     loadLetters();
+    setInterval(loadLetters, 5000);
   </script>
 </body>
 
