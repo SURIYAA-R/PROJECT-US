@@ -19,8 +19,17 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 // Serve everything inside public/ as static files (HTML, CSS, JS, images).
-// When someone visits http://localhost:3000/ they'll get public/index.html.
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Guard for missing database config in serverless runtime
+app.use('/api', (req, res, next) => {
+  if (!supabase) {
+    return res.status(500).json({
+      error: 'Missing SUPABASE_URL or SUPABASE_SECRET_KEY in Vercel Project Environment Variables.'
+    });
+  }
+  next();
+});
 
 // ============================================================
 //  AUTH — POST /api/login
@@ -259,18 +268,17 @@ app.delete('/api/messages/:id', async (req, res) => {
 });
 
 // ============================================================
-//  START THE SERVER
+//  EXPORTS & LOCAL SERVER START
 // ============================================================
-// We seed the accounts first, then start listening.
-// Even if seeding fails (e.g. network blip) the server still
-// starts — the accounts probably already exist from a previous run.
-// ============================================================
-async function start() {
-  await seedAccounts();
+// Export app for Vercel serverless deployment
+module.exports = app;
 
-  app.listen(PORT, () => {
-    console.log(`\n🌿  Our Space server is running → http://localhost:${PORT}\n`);
-  });
+// If executed directly (e.g. `node server.js`), seed accounts & start local HTTP server
+if (require.main === module) {
+  (async () => {
+    await seedAccounts();
+    app.listen(PORT, () => {
+      console.log(`\n🌿  Our Space server is running → http://localhost:${PORT}\n`);
+    });
+  })();
 }
-
-start();

@@ -24,14 +24,14 @@ const supabaseKey = process.env.SUPABASE_SECRET_KEY;
 // the env vars are missing (common mistake when setting up).
 if (!supabaseUrl || !supabaseKey) {
   console.error(
-    '❌  Missing SUPABASE_URL or SUPABASE_SECRET_KEY in your .env file.\n' +
-    '    Copy .env.example to .env and fill in the values from your\n' +
-    '    Supabase project dashboard → Settings → API.'
+    '❌  Missing SUPABASE_URL or SUPABASE_SECRET_KEY environment variables.\n' +
+    '    Ensure SUPABASE_URL and SUPABASE_SECRET_KEY are set in your .env file or Vercel Environment Variables.'
   );
-  process.exit(1);
 }
 
-const supabase = createClient(supabaseUrl, supabaseKey);
+const supabase = (supabaseUrl && supabaseKey) 
+  ? createClient(supabaseUrl, supabaseKey)
+  : null;
 
 // ---- 2. Password hashing helper ----
 // SHA-256 is a one-way hash — we store the hash, never the raw
@@ -46,6 +46,10 @@ function hashPassword(plainText) {
 // onConflict: 'username' tells Supabase which column is the
 // unique key to match on, so it won't create duplicates.
 async function seedAccounts() {
+  if (!supabase) {
+    console.error('⚠️  Cannot seed accounts: Supabase client is not initialized.');
+    return;
+  }
   const accounts = [
     { username: 'Eren',   password_hash: hashPassword('Janani Suriyaa') },
     { username: 'Mikasa', password_hash: hashPassword('Janani Suriyaa') },
