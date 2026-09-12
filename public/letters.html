@@ -555,7 +555,7 @@
     <!-- Composer Section -->
     <div class="glass-panel composer">
       <h2>Write something</h2>
-      <form class="composer-form" action="#" method="POST">
+      <form class="composer-form" onsubmit="event.preventDefault();">
         <input class="composer-input" type="text" placeholder="Title" />
         <textarea class="composer-textarea" placeholder="Add letter..."></textarea>
         <div class="composer-footer">
@@ -586,6 +586,109 @@
     </nav>
   </footer>
 
+  <script>
+    // Get logged-in user from sessionStorage
+    const currentUser = sessionStorage.getItem('currentUser') || 'Eren';
+
+    const form = document.querySelector('.composer-form');
+    const titleInput = document.querySelector('.composer-input');
+    const textarea = document.querySelector('.composer-textarea');
+    const lettersList = document.getElementById('lettersList');
+
+    // Prevent 405 Method Not Allowed by handling form submit via API fetch
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const title = titleInput.value.trim();
+      const body = textarea.value.trim();
+
+      if (!title && !body) return;
+
+      const fullText = title ? `**${title}**\n\n${body}` : body;
+
+      try {
+        const res = await fetch('/api/notes', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ author: currentUser, text: fullText })
+        });
+
+        if (res.ok) {
+          titleInput.value = '';
+          textarea.value = '';
+          await loadLetters();
+        } else {
+          alert('Failed to publish letter.');
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Error publishing letter.');
+      }
+    });
+
+    async function loadLetters() {
+      try {
+        const res = await fetch('/api/notes');
+        if (!res.ok) return;
+        const notes = await res.json();
+        
+        if (!lettersList) return;
+        if (notes.length === 0) {
+          lettersList.innerHTML = `<p style="text-align:center;opacity:0.6;padding:24px;">No letters yet. Write the first one above! 💌</p>`;
+          return;
+        }
+
+        lettersList.innerHTML = notes.map(note => {
+          const dateStr = new Date(note.created_at || Date.now()).toLocaleDateString('en-US', {
+            month: 'short', day: 'numeric', year: 'numeric'
+          });
+          
+          let displayContent = escapeHtml(note.text);
+          if (displayContent.startsWith('**') && displayContent.includes('**\n\n')) {
+            const parts = displayContent.split('**\n\n');
+            const t = parts[0].replace(/\*\*/g, '');
+            const b = parts.slice(1).join('**\n\n');
+            displayContent = `<h3 style="margin-top:0;margin-bottom:8px;">${t}</h3><p style="white-space:pre-wrap;">${b}</p>`;
+          } else {
+            displayContent = `<p style="white-space:pre-wrap;">${displayContent}</p>`;
+          }
+
+          return `
+            <div class="glass-panel letter-card" style="margin-bottom:16px;padding:20px;position:relative;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;opacity:0.7;font-size:0.85rem;">
+                <span>From: <strong>${escapeHtml(note.author)}</strong></span>
+                <span>${dateStr}</span>
+              </div>
+              <div>${displayContent}</div>
+              <button onclick="deleteLetter('${note.id}')" style="position:absolute;bottom:12px;right:12px;background:none;border:none;color:#e74c3c;cursor:pointer;opacity:0.6;" title="Delete">
+                <span class="material-symbols-outlined" style="font-size:18px;">delete</span>
+              </button>
+            </div>
+          `;
+        }).join('');
+      } catch (err) {
+        console.error('loadLetters error:', err);
+      }
+    }
+
+    async function deleteLetter(id) {
+      if (!confirm('Are you sure you want to delete this letter?')) return;
+      try {
+        const res = await fetch('/api/notes/' + id, { method: 'DELETE' });
+        if (res.ok) await loadLetters();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str || '';
+      return div.innerHTML;
+    }
+
+    // Load letters on page load
+    loadLetters();
+  </script>
 </body>
 
 </html>
