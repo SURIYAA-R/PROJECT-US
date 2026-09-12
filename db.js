@@ -51,8 +51,8 @@ async function seedAccounts() {
     return;
   }
   const accounts = [
-    { username: 'Eren',   password_hash: hashPassword('Janani Suriyaa') },
-    { username: 'Mikasa', password_hash: hashPassword('Janani Suriyaa') },
+    { username: 'Eren',   password_hash: hashPassword('Surijan2919@') },
+    { username: 'Mikasa', password_hash: hashPassword('Surijan2919@') },
   ];
 
   const { error } = await supabase

@@ -71,7 +71,7 @@ async function runTests() {
     const res = await request('/api/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: { username: 'Eren', password: 'Janani Suriyaa' }
+      body: { username: 'Eren', password: 'Surijan2919@' }
     });
     if (res.status !== 200 || !res.data.success) throw new Error(`Login failed: ${JSON.stringify(res.data)}`);
   });
