@@ -3,151 +3,307 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Our Space</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeetCode - Log In</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Work+Sans:wght@400;500;600&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #f8f5ec;
-            --surface: rgba(255, 255, 255, 0.5);
-            --ink: #33422f;
-            --dusk: #8a9683;
-            --seal: #a9d6a0;
-            --seal-start: #c3d6ac;
-            --seal-end: #8fa878;
-            --gold: #a68a52;
-            --line: #dde3cd;
+            --leetcode-bg: #f7f9fa;
+            --leetcode-card-bg: #ffffff;
+            --leetcode-orange: #FFA116;
+            --leetcode-dark: #262626;
+            --leetcode-btn: #3f4d58;
+            --leetcode-btn-hover: #2d3840;
+            --leetcode-border: #dcdcdc;
+            --leetcode-muted: #8c8c8c;
+            --leetcode-text: #262626;
+
+            /* Legacy variable mapping for app view fallback */
+            --bg: #f7f9fa;
+            --surface: #ffffff;
+            --ink: #262626;
+            --dusk: #8c8c8c;
+            --seal: #3f4d58;
+            --seal-start: #3f4d58;
+            --seal-end: #2d3840;
+            --gold: #FFA116;
+            --line: #dcdcdc;
             --card-bg: #ffffff;
         }
 
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            margin: 0;
             min-height: 100vh;
-            background: radial-gradient(ellipse at top, #eef0e2 0%, var(--bg) 65%);
-            color: var(--ink);
-            font-family: 'Work Sans', sans-serif;
+            background: #f0f2f5;
+            color: var(--leetcode-text);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* LeetCode Top Navigation Bar */
+        .leetcode-nav {
+            height: 52px;
+            background: #ffffff;
+            border-bottom: 1px solid #e5e5e5;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            font-size: 14px;
+        }
+
+        .leetcode-nav-left {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .leetcode-logo-nav {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .leetcode-nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .leetcode-nav-links a {
+            color: #595959;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: color 0.15s;
+        }
+
+        .leetcode-nav-links a:hover {
+            color: #262626;
+        }
+
+        .leetcode-nav-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .leetcode-search {
+            background: #f2f3f5;
+            border-radius: 16px;
+            padding: 6px 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #8c8c8c;
+            font-size: 13px;
+            width: 180px;
+        }
+
+        .leetcode-icon-btn {
+            background: none;
+            border: none;
+            color: #595959;
+            cursor: pointer;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .leetcode-premium-btn {
+            background: #fff3e0;
+            color: #f89f1b;
+            border: none;
+            border-radius: 14px;
+            padding: 6px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Main Container */
+        .login-page-container {
+            flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 24px;
+            padding: 40px 20px;
         }
 
-        .envelope {
+        .leetcode-card {
+            background: #ffffff;
             width: 100%;
-            max-width: 460px;
-            position: relative;
+            max-width: 400px;
+            border-radius: 8px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            padding: 40px 36px 32px;
+            text-align: center;
         }
 
-        /* the "flap" — a triangle sitting on top of the card, like an envelope flap */
-        .flap {
+        .leetcode-logo-center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .leetcode-brand-name {
+            font-size: 22px;
+            font-weight: 700;
+            color: #262626;
+            margin-top: 10px;
+            letter-spacing: -0.3px;
+        }
+
+        .leetcode-input {
             width: 100%;
-            height: 60px;
-            background: var(--surface);
-            clip-path: polygon(0 0, 50% 100%, 100% 0);
-            margin-bottom: -1px;
-        }
-
-        .card {
-            background: var(--surface);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-            border: 1px solid rgba(143, 168, 120, 0.3);
+            height: 44px;
+            border: 1px solid #dcdcdc;
             border-radius: 4px;
-            padding: 36px 32px 32px;
-            box-shadow: 0 30px 60px -20px rgba(80, 90, 60, 0.25);
-        }
-
-        h1 {
-            font-family: 'Fraunces', serif;
-            font-weight: 600;
-            font-size: 1.6rem;
-            margin: 0 0 6px;
-            text-align: center;
-            letter-spacing: 0.2px;
-            color: var(--ink);
-        }
-
-        .subtitle {
-            text-align: center;
-            color: var(--dusk);
-            font-size: 0.88rem;
-            margin: 0 0 28px;
-        }
-
-        label {
-            display: block;
-            font-size: 0.78rem;
-            color: var(--dusk);
-            margin-bottom: 6px;
-            margin-top: 16px;
-        }
-
-        input {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.6);
-            border: 1px solid var(--line);
-            border-radius: 6px;
-            padding: 11px 12px;
-            color: var(--ink);
-            font-family: 'Work Sans', sans-serif;
-            font-size: 0.95rem;
+            padding: 0 14px;
+            font-size: 14px;
+            color: #262626;
             outline: none;
-            transition: border-color 0.15s ease;
+            margin-bottom: 16px;
+            transition: border-color 0.15s;
+            box-sizing: border-box;
+            background: #ffffff;
         }
 
-        input:focus {
-            border-color: var(--gold);
+        .leetcode-input:focus {
+            border-color: #262626;
         }
 
         .error {
-            color: #b2503f;
-            font-size: 0.82rem;
-            margin-top: 12px;
-            min-height: 1.1em;
+            color: #e74c3c;
+            font-size: 13px;
+            margin-bottom: 12px;
+            text-align: left;
         }
 
-        /* the wax seal button — the signature element */
-        .seal-row {
+        .captcha-box {
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            background: #fafafa;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .captcha-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .captcha-check {
+            width: 22px;
+            height: 22px;
+            background: #34a853;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .captcha-text {
+            font-size: 14px;
+            font-weight: 500;
+            color: #333333;
+        }
+
+        .cloudflare-logo {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            font-size: 9px;
+            color: #8c8c8c;
+            line-height: 1.2;
+        }
+
+        .leetcode-submit-btn {
+            width: 100%;
+            height: 44px;
+            background: #3f4d58;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .leetcode-submit-btn:hover {
+            background: #2d3840;
+        }
+
+        .leetcode-submit-btn:disabled {
+            opacity: 0.7;
+            cursor: default;
+        }
+
+        .leetcode-card-links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 18px;
+            font-size: 13px;
+        }
+
+        .leetcode-card-links a {
+            color: #777777;
+            text-decoration: none;
+        }
+
+        .leetcode-card-links a:hover {
+            color: #262626;
+        }
+
+        .social-divider {
+            margin-top: 24px;
+            font-size: 12px;
+            color: #a0a0a0;
+        }
+
+        .social-icons {
             display: flex;
             justify-content: center;
-            margin-top: 28px;
+            gap: 12px;
+            margin-top: 14px;
         }
 
-        .seal {
-            width: 100%;
-            max-width: 220px;
-            height: 48px;
-            border-radius: 10px;
-            background: linear-gradient(135deg, var(--seal-start), var(--seal-end));
-            border: none;
-            color: #1e3019;
-            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.25);
-            font-family: 'Fraunces', serif;
-            font-size: 0.9rem;
+        .social-icon-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #e5e5e5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666666;
+            font-size: 13px;
             font-weight: 600;
-            letter-spacing: 0.5px;
             cursor: pointer;
-            box-shadow: 0 8px 18px -6px rgba(143, 168, 120, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.25);
-            transition: transform 0.12s ease, opacity 0.15s ease;
+            transition: background 0.15s;
         }
 
-        .seal:hover {
-            opacity: 0.88;
-        }
-
-        .seal:active {
-            transform: scale(0.92);
-        }
-
-        .seal:disabled {
-            opacity: 0.6;
-            cursor: default;
+        .social-icon-btn:hover {
+            background: #d8d8d8;
         }
 
         .switch {
@@ -442,9 +598,37 @@
 
 <body>
 
-    <div class="envelope">
-        <div class="flap"></div>
-        <div class="card" id="card">
+    <!-- LeetCode Header Navigation -->
+    <nav class="leetcode-nav">
+        <div class="leetcode-nav-left">
+            <div class="leetcode-logo-nav">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M16.102 17.93l-2.697 2.607c-.466.467-1.111.662-1.823.662s-1.357-.195-1.824-.662l-4.332-4.363c-.467-.467-.702-1.15-.702-1.863 0-.713.235-1.357.702-1.824l4.319-4.38c.467-.467 1.125-.645 1.837-.645s1.357.195 1.824.662l2.697 2.606c.514.515 1.365.497 1.9-.038.535-.536.553-1.387.039-1.901l-2.606-2.636a4.994 4.994 0 00-3.855-1.42 5.01 5.01 0 00-3.855 1.42L3.398 12.08a5.006 5.006 0 000 7.086l4.332 4.363a4.995 4.995 0 003.553 1.47 5.011 5.011 0 003.553-1.47l2.697-2.607c.514-.514.496-1.365-.039-1.901-.535-.535-1.386-.552-1.9-.038z" fill="#FFA116"/>
+                    <path d="M10.74 9.64l4.319-4.38a4.994 4.994 0 013.553-1.42 5.01 5.01 0 013.553 1.42l.5.5c.515.515.497 1.366-.038 1.901-.536.536-1.387.553-1.902.039l-.5-.5a2.505 2.505 0 00-1.824-.662 2.497 2.497 0 00-1.824.662l-4.319 4.38a1.356 1.356 0 000 1.902c.515.514 1.366.496 1.902-.039z" fill="#262626"/>
+                </svg>
+            </div>
+            <div class="leetcode-nav-links">
+                <a href="#">Explore</a>
+                <a href="#">Problems</a>
+                <a href="#">Contest</a>
+                <a href="#">Discuss</a>
+                <a href="#">Interview ▾</a>
+                <a href="#" style="color:#FFA116;">Store ▾</a>
+            </div>
+        </div>
+        <div class="leetcode-nav-right">
+            <div class="leetcode-search">
+                🔍 Search
+            </div>
+            <button class="leetcode-icon-btn">🔔</button>
+            <button class="leetcode-icon-btn">🔥 0</button>
+            <button class="leetcode-premium-btn">Premium</button>
+        </div>
+    </nav>
+
+    <!-- Center Login Card -->
+    <div class="login-page-container">
+        <div class="leetcode-card" id="card">
             <!-- content injected by JS -->
         </div>
     </div>
@@ -477,23 +661,48 @@
             }
 
             card.innerHTML = `
-      <h1>Our Space</h1>
-      <div class="subtitle">A private place for the two of you</div>
+                <div class="leetcode-logo-center">
+                    <svg width="42" height="42" viewBox="0 0 24 24" fill="none">
+                        <path d="M16.102 17.93l-2.697 2.607c-.466.467-1.111.662-1.823.662s-1.357-.195-1.824-.662l-4.332-4.363c-.467-.467-.702-1.15-.702-1.863 0-.713.235-1.357.702-1.824l4.319-4.38c.467-.467 1.125-.645 1.837-.645s1.357.195 1.824.662l2.697 2.606c.514.515 1.365.497 1.9-.038.535-.536.553-1.387.039-1.901l-2.606-2.636a4.994 4.994 0 00-3.855-1.42 5.01 5.01 0 00-3.855 1.42L3.398 12.08a5.006 5.006 0 000 7.086l4.332 4.363a4.995 4.995 0 003.553 1.47 5.011 5.011 0 003.553-1.47l2.697-2.607c.514-.514.496-1.365-.039-1.901-.535-.535-1.386-.552-1.9-.038z" fill="#FFA116"/>
+                        <path d="M10.74 9.64l4.319-4.38a4.994 4.994 0 013.553-1.42 5.01 5.01 0 013.553 1.42l.5.5c.515.515.497 1.366-.038 1.901-.536.536-1.387.553-1.902.039l-.5-.5a2.505 2.505 0 00-1.824-.662 2.497 2.497 0 00-1.824.662l-4.319 4.38a1.356 1.356 0 000 1.902c.515.514 1.366.496 1.902-.039z" fill="#262626"/>
+                    </svg>
+                    <div class="leetcode-brand-name">LeetCode</div>
+                </div>
 
-      <label for="username">Name</label>
-      <input id="username" type="text" autocomplete="off" />
+                <input class="leetcode-input" id="username" type="text" placeholder="Username or E-mail" autocomplete="off" />
+                <input class="leetcode-input" id="password" type="password" placeholder="Password" autocomplete="off" />
 
-      <label for="password">Password</label>
-      <input id="password" type="password" autocomplete="off" />
+                ${errorMsg ? `<div class="error" id="errorMsg">${escapeHtml(errorMsg)}</div>` : ''}
 
-      <div class="error" id="errorMsg">${errorMsg}</div>
+                <div class="captcha-box">
+                    <div class="captcha-left">
+                        <div class="captcha-check">✓</div>
+                        <span class="captcha-text">Success!</span>
+                    </div>
+                    <div class="cloudflare-logo">
+                        <span style="font-weight:700;color:#f38020;">CLOUDFLARE</span>
+                        <span>Privacy • Terms</span>
+                    </div>
+                </div>
 
-      <div class="seal-row">
-        <button class="seal" id="submitBtn" ${loading ? 'disabled' : ''}>
-          ${loading ? '...' : 'Unlock'}
-        </button>
-      </div>
-    `;
+                <button class="leetcode-submit-btn" id="submitBtn" ${loading ? 'disabled' : ''}>
+                    ${loading ? 'Signing In...' : 'Sign In'}
+                </button>
+
+                <div class="leetcode-card-links">
+                    <a href="#">Forgot Password?</a>
+                    <a href="#">Sign Up</a>
+                </div>
+
+                <div class="social-divider">or you can sign in with</div>
+
+                <div class="social-icons">
+                    <div class="social-icon-btn">G</div>
+                    <div class="social-icon-btn">🐱</div>
+                    <div class="social-icon-btn">f</div>
+                    <div class="social-icon-btn">...</div>
+                </div>
+            `;
 
             document.getElementById('submitBtn').onclick = handleSubmit;
 
