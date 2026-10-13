@@ -60,6 +60,12 @@ app.post('/api/login', async (req, res) => {
 
     // If Supabase returned an error or no row was found, fail
     if (error || !data) {
+      if (error && error.code !== 'PGRST116') {
+        console.error('Supabase query error during login:', error.message || error);
+        return res.status(503).json({
+          error: 'Database connection failed. Please check if your Supabase project is active in the dashboard.'
+        });
+      }
       return res.status(401).json({ error: 'Name or password is incorrect' });
     }
 
