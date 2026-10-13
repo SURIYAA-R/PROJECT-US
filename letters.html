@@ -169,10 +169,11 @@
     .page-main {
       max-width: 750px;
       margin: 0 auto;
-      padding: 48px 20px 64px;
+      padding: clamp(24px, 3.5vh, 36px) clamp(14px, 2.5vw, 20px) 40px;
       display: flex;
       flex-direction: column;
-      gap: 40px;
+      gap: 24px;
+      box-sizing: border-box;
     }
 
     .page-header h1 {
@@ -207,10 +208,11 @@
        COMPOSER SECTION
     ============================ */
     .composer {
-      padding: 24px;
+      padding: clamp(18px, 2.5vw, 24px);
       display: flex;
       flex-direction: column;
-      min-height: 420px;
+      min-height: 320px;
+      box-sizing: border-box;
     }
 
     .composer h2 {
@@ -509,9 +511,9 @@
     ============================ */
     @media (max-width: 640px) {
       .nav-links { display: none; }
-      .page-main { padding: 32px 16px 48px; gap: 28px; }
-      .composer { padding: 18px; min-height: 360px; }
-      .letter-card { padding: 16px; }
+      .page-main { padding: 20px 14px 36px; gap: 20px; }
+      .composer { padding: 16px; min-height: 280px; }
+      .letter-card { padding: 14px; }
       .letter-date { display: none; }
       .page-footer { flex-direction: column; text-align: center; }
     }
