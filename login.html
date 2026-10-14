@@ -10,27 +10,73 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --leetcode-bg: #f7f9fa;
-            --leetcode-card-bg: #ffffff;
+            --leetcode-bg: #f5f7f2;
+            --leetcode-card-bg: #fbf9f5;
             --leetcode-orange: #FFA116;
             --leetcode-dark: #262626;
             --leetcode-btn: #3f4d58;
             --leetcode-btn-hover: #2d3840;
-            --leetcode-border: #dcdcdc;
-            --leetcode-muted: #8c8c8c;
-            --leetcode-text: #262626;
+            --leetcode-border: #dde3cd;
+            --leetcode-muted: #8a9683;
+            --leetcode-text: #33422f;
 
-            /* Legacy variable mapping for app view fallback */
-            --bg: #f7f9fa;
-            --surface: #ffffff;
-            --ink: #262626;
-            --dusk: #8c8c8c;
+            --bg: #f5f7f2;
+            --surface: #fbf9f5;
+            --ink: #33422f;
+            --dusk: #8a9683;
             --seal: #3f4d58;
             --seal-start: #3f4d58;
             --seal-end: #2d3840;
             --gold: #FFA116;
-            --line: #dcdcdc;
-            --card-bg: #ffffff;
+            --line: #dde3cd;
+            --card-bg: #fbf9f5;
+
+            /* Claymorphism Shadow Tokens (Light Mode) */
+            --clay-shadow-dark: rgba(120, 140, 100, 0.28);
+            --clay-shadow-light: rgba(255, 255, 255, 0.95);
+            --clay-inner-dark: rgba(120, 140, 100, 0.16);
+            --clay-inner-light: rgba(255, 255, 255, 0.85);
+
+            --btn-clay-shadow:
+                6px 8px 18px var(--clay-shadow-dark),
+                -4px -4px 12px var(--clay-shadow-light),
+                inset 2px 2px 5px var(--clay-inner-light),
+                inset -2px -2px 5px var(--clay-inner-dark);
+        }
+
+        [data-theme="dark"] {
+            --leetcode-bg: #161a12;
+            --leetcode-card-bg: #22291d;
+            --leetcode-orange: #FFA116;
+            --leetcode-dark: #eff1f6;
+            --leetcode-btn: #3e4852;
+            --leetcode-btn-hover: #4e5b67;
+            --leetcode-border: #2f3a28;
+            --leetcode-muted: #8a9683;
+            --leetcode-text: #e8eed8;
+
+            --bg: #161a12;
+            --surface: #22291d;
+            --ink: #e8eed8;
+            --dusk: #8a9683;
+            --seal: #FFA116;
+            --seal-start: #3e4852;
+            --seal-end: #2d3840;
+            --gold: #FFA116;
+            --line: #2f3a28;
+            --card-bg: #22291d;
+
+            /* Claymorphism Shadow Tokens (Dark Mode) */
+            --clay-shadow-dark: rgba(0, 0, 0, 0.60);
+            --clay-shadow-light: rgba(255, 255, 255, 0.06);
+            --clay-inner-dark: rgba(0, 0, 0, 0.40);
+            --clay-inner-light: rgba(255, 255, 255, 0.08);
+
+            --btn-clay-shadow:
+                6px 8px 18px var(--clay-shadow-dark),
+                -4px -4px 12px var(--clay-shadow-light),
+                inset 2px 2px 5px var(--clay-inner-light),
+                inset -2px -2px 5px var(--clay-inner-dark);
         }
 
         * {
@@ -41,23 +87,35 @@
 
         body {
             min-height: 100vh;
-            background: #f0f2f5;
+            background: radial-gradient(ellipse at top, var(--bg) 0%, #e8ede0 70%);
             color: var(--leetcode-text);
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             display: flex;
             flex-direction: column;
+            transition: background 0.3s ease, color 0.3s ease;
         }
 
-        /* LeetCode Top Navigation Bar */
+        [data-theme="dark"] body {
+            background: radial-gradient(ellipse at top, #161a12 0%, #1a1e16 70%);
+        }
+
+        /* ============================================================
+           CLAY TOP NAVIGATION BAR
+        ============================================================ */
         .leetcode-nav {
-            height: 52px;
-            background: #ffffff;
-            border-bottom: 1px solid #e5e5e5;
+            height: 56px;
+            background: var(--leetcode-card-bg);
+            border-radius: 0 0 24px 24px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 24px;
             font-size: 14px;
+            box-shadow:
+                0 10px 24px var(--clay-shadow-dark),
+                inset 0 4px 10px var(--clay-inner-light),
+                inset 0 -6px 14px var(--clay-inner-dark);
+            transition: background 0.3s ease, box-shadow 0.3s ease;
         }
 
         .leetcode-nav-left {
@@ -81,7 +139,7 @@
         }
 
         .leetcode-nav-links a {
-            color: #595959;
+            color: var(--leetcode-muted);
             text-decoration: none;
             font-weight: 500;
             font-size: 14px;
@@ -89,7 +147,7 @@
         }
 
         .leetcode-nav-links a:hover {
-            color: #262626;
+            color: var(--leetcode-text);
         }
 
         .leetcode-nav-right {
@@ -98,41 +156,84 @@
             gap: 16px;
         }
 
+        /* Inset clay search input */
         .leetcode-search {
-            background: #f2f3f5;
-            border-radius: 16px;
-            padding: 6px 14px;
+            background: rgba(0, 0, 0, 0.04);
+            border-radius: 9999px;
+            padding: 7px 16px;
             display: flex;
             align-items: center;
             gap: 8px;
-            color: #8c8c8c;
+            color: var(--leetcode-muted);
             font-size: 13px;
             width: 180px;
+            box-shadow:
+                inset 2px 2px 5px var(--clay-inner-dark),
+                inset -2px -2px 5px var(--clay-inner-light);
         }
 
+        [data-theme="dark"] .leetcode-search {
+            background: rgba(0, 0, 0, 0.25);
+        }
+
+        /* Raised circular clay icon buttons */
         .leetcode-icon-btn {
-            background: none;
+            background: var(--leetcode-card-bg);
             border: none;
-            color: #595959;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            color: var(--leetcode-muted);
             cursor: pointer;
-            font-size: 15px;
+            font-size: 14px;
             display: flex;
             align-items: center;
-            gap: 4px;
+            justify-content: center;
+            box-shadow:
+                4px 4px 10px var(--clay-shadow-dark),
+                -3px -3px 8px var(--clay-shadow-light),
+                inset -2px -2px 4px var(--clay-inner-dark),
+                inset 2px 2px 4px var(--clay-inner-light);
+            transition: transform 0.15s ease;
+        }
+
+        .leetcode-icon-btn:active {
+            transform: scale(0.95);
+            box-shadow:
+                inset 2px 2px 5px var(--clay-shadow-dark),
+                inset -1px -1px 3px var(--clay-shadow-light);
         }
 
         .leetcode-premium-btn {
-            background: #fff3e0;
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
             color: #f89f1b;
             border: none;
-            border-radius: 14px;
-            padding: 6px 14px;
+            border-radius: 9999px;
+            padding: 8px 16px;
             font-size: 13px;
             font-weight: 600;
             cursor: pointer;
+            box-shadow:
+                4px 6px 14px rgba(248, 159, 27, 0.25),
+                -3px -3px 8px var(--clay-shadow-light),
+                inset 2px 2px 4px rgba(255, 255, 255, 0.8),
+                inset -2px -2px 4px rgba(248, 159, 27, 0.2);
+            transition: transform 0.15s ease;
         }
 
-        /* Main Container */
+        [data-theme="dark"] .leetcode-premium-btn {
+            background: linear-gradient(135deg, #42301c, #2e2013);
+            color: #FFA116;
+            box-shadow:
+                4px 6px 14px rgba(0, 0, 0, 0.4),
+                -2px -2px 6px rgba(255, 255, 255, 0.05),
+                inset 2px 2px 4px rgba(255, 255, 255, 0.08),
+                inset -2px -2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        /* ============================================================
+           CLAY LOGIN CARD
+        ============================================================ */
         .login-page-container {
             flex: 1;
             display: flex;
@@ -142,13 +243,19 @@
         }
 
         .leetcode-card {
-            background: #ffffff;
+            background: var(--leetcode-card-bg);
             width: 100%;
-            max-width: 400px;
-            border-radius: 8px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
-            padding: 40px 36px 32px;
+            max-width: 420px;
+            border-radius: 28px;
+            box-shadow:
+                14px 18px 36px var(--clay-shadow-dark),
+                -12px -12px 28px var(--clay-shadow-light),
+                inset -6px -6px 14px var(--clay-inner-dark),
+                inset 6px 6px 14px var(--clay-inner-light);
+            padding: 40px 36px 36px;
             text-align: center;
+            border: none;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
         }
 
         .leetcode-logo-center {
@@ -161,28 +268,39 @@
         .leetcode-brand-name {
             font-size: 22px;
             font-weight: 700;
-            color: #262626;
+            color: var(--leetcode-text);
             margin-top: 10px;
             letter-spacing: -0.3px;
         }
 
+        /* Inset clay input styles */
         .leetcode-input {
             width: 100%;
-            height: 44px;
-            border: 1px solid #dcdcdc;
-            border-radius: 4px;
-            padding: 0 14px;
+            height: 46px;
+            border: none;
+            border-radius: 14px;
+            padding: 0 16px;
             font-size: 14px;
-            color: #262626;
+            color: var(--leetcode-text);
             outline: none;
             margin-bottom: 16px;
-            transition: border-color 0.15s;
             box-sizing: border-box;
-            background: #ffffff;
+            background: rgba(0, 0, 0, 0.03);
+            box-shadow:
+                inset 3px 3px 6px var(--clay-inner-dark),
+                inset -2px -2px 5px var(--clay-inner-light);
+            transition: box-shadow 0.2s;
+        }
+
+        [data-theme="dark"] .leetcode-input {
+            background: rgba(0, 0, 0, 0.25);
         }
 
         .leetcode-input:focus {
-            border-color: #262626;
+            box-shadow:
+                inset 3px 3px 6px var(--clay-inner-dark),
+                inset -2px -2px 5px var(--clay-inner-light),
+                0 0 0 2px var(--leetcode-orange);
         }
 
         .error {
@@ -192,15 +310,23 @@
             text-align: left;
         }
 
+        /* Inset clay captcha box */
         .captcha-box {
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
-            background: #fafafa;
+            border: none;
+            border-radius: 14px;
+            background: rgba(0, 0, 0, 0.02);
+            box-shadow:
+                inset 2px 2px 5px var(--clay-inner-dark),
+                inset -2px -2px 5px var(--clay-inner-light);
             padding: 10px 14px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin-bottom: 20px;
+        }
+
+        [data-theme="dark"] .captcha-box {
+            background: rgba(0, 0, 0, 0.2);
         }
 
         .captcha-left {
@@ -209,23 +335,24 @@
             gap: 10px;
         }
 
+        /* Raised clay check circle */
         .captcha-check {
-            width: 22px;
-            height: 22px;
+            width: 24px;
+            height: 24px;
             background: #34a853;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #ffffff;
-            font-size: 13px;
-            font-weight: bold;
+            box-shadow:
+                2px 3px 8px rgba(52, 168, 83, 0.35),
+                inset 1px 1px 3px rgba(255, 255, 255, 0.7);
         }
 
         .captcha-text {
             font-size: 14px;
             font-weight: 500;
-            color: #333333;
+            color: var(--leetcode-text);
         }
 
         .cloudflare-logo {
@@ -233,30 +360,40 @@
             flex-direction: column;
             align-items: flex-end;
             font-size: 9px;
-            color: #8c8c8c;
+            color: var(--leetcode-muted);
             line-height: 1.2;
         }
 
+        /* Raised clay submit button */
         .leetcode-submit-btn {
             width: 100%;
-            height: 44px;
-            background: #3f4d58;
+            height: 48px;
+            background: linear-gradient(135deg, var(--leetcode-btn), var(--leetcode-btn-hover));
             color: #ffffff;
             border: none;
-            border-radius: 4px;
+            border-radius: 14px;
             font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.15s;
+            box-shadow: var(--btn-clay-shadow);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
         }
 
         .leetcode-submit-btn:hover {
-            background: #2d3840;
+            transform: translateY(-2px);
+        }
+
+        .leetcode-submit-btn:active {
+            transform: scale(0.98);
+            box-shadow:
+                inset 4px 4px 10px var(--clay-shadow-dark),
+                inset -3px -3px 8px var(--clay-shadow-light);
         }
 
         .leetcode-submit-btn:disabled {
-            opacity: 0.7;
+            opacity: 0.6;
             cursor: default;
+            transform: none;
         }
 
         .leetcode-card-links {
@@ -267,454 +404,79 @@
         }
 
         .leetcode-card-links a {
-            color: #777777;
+            color: var(--leetcode-muted);
             text-decoration: none;
+            transition: color 0.15s;
         }
 
         .leetcode-card-links a:hover {
-            color: #262626;
+            color: var(--leetcode-text);
         }
 
         .social-divider {
             margin-top: 24px;
             font-size: 12px;
-            color: #a0a0a0;
+            color: var(--leetcode-muted);
         }
 
         .social-icons {
             display: flex;
             justify-content: center;
-            gap: 12px;
+            gap: 14px;
             margin-top: 14px;
         }
 
+        /* Raised circular clay social button */
         .social-icon-btn {
-            width: 32px;
-            height: 32px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
-            background: #e5e5e5;
+            background: var(--leetcode-card-bg);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #666666;
+            color: var(--leetcode-text);
             font-size: 13px;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.15s;
-        }
-
-        .social-icon-btn:hover {
-            background: #d8d8d8;
-        }
-
-        .switch {
-            text-align: center;
-            margin-top: 22px;
-            font-size: 0.85rem;
-            color: var(--dusk);
-        }
-
-        .switch button {
-            background: none;
-            border: none;
-            color: var(--gold);
-            cursor: pointer;
-            font-size: 0.85rem;
-            text-decoration: underline;
-            padding: 0;
-            font-family: inherit;
-        }
-
-        .welcome {
-            text-align: center;
-        }
-
-        .welcome h1 {
-            margin-bottom: 4px;
-        }
-
-        .welcome p {
-            color: var(--dusk);
-            font-size: 0.9rem;
-        }
-
-        .logout {
-            margin-top: 24px;
-            background: none;
-            border: 1px solid var(--line);
-            color: var(--ink);
-            padding: 10px 18px;
-            border-radius: 14px;
-            cursor: pointer;
-            font-family: 'Work Sans', sans-serif;
-            font-size: 0.85rem;
-        }
-
-        /* ---- Notes area (step 2) ---- */
-        .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 18px;
-        }
-
-        .top-bar h1 {
-            text-align: left;
-            margin: 0;
-            font-size: 1.3rem;
-        }
-
-        .signed-in-as {
-            color: var(--dusk);
-            font-size: 0.78rem;
-            margin-top: 2px;
-        }
-
-        textarea {
-            width: 100%;
-            min-height: 80px;
-            background: rgba(255, 255, 255, 0.6);
-            border: 1px solid var(--line);
-            border-radius: 6px;
-            padding: 11px 12px;
-            color: var(--ink);
-            font-family: 'Work Sans', sans-serif;
-            font-size: 0.92rem;
-            resize: vertical;
-            outline: none;
-        }
-
-        textarea:focus {
-            border-color: var(--gold);
-        }
-
-        .add-btn {
-            margin-top: 10px;
-            background: var(--seal);
-            color: #24331f;
-            border: none;
-            padding: 10px 16px;
-            border-radius: 14px;
-            font-family: 'Work Sans', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 500;
-            cursor: pointer;
-        }
-
-        .add-btn:disabled {
-            opacity: 0.5;
-            cursor: default;
-        }
-
-        .notes-list {
-            margin-top: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            max-height: 320px;
-            overflow-y: auto;
-        }
-
-        .note-item {
-            background: rgba(255, 255, 255, 0.55);
-            border: 1px solid var(--line);
-            border-radius: 6px;
-            padding: 12px 14px;
-            position: relative;
-        }
-
-        .note-text {
-            font-size: 0.9rem;
-            white-space: pre-wrap;
-            word-break: break-word;
-            margin: 0 0 8px;
-        }
-
-        .note-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: var(--dusk);
-            font-size: 0.72rem;
-        }
-
-        .delete-btn {
-            background: none;
-            border: none;
-            color: #b2503f;
-            cursor: pointer;
-            font-size: 0.72rem;
-            padding: 0;
-            text-decoration: underline;
-        }
-
-        .empty-state {
-            text-align: center;
-            color: var(--dusk);
-            font-size: 0.85rem;
-            padding: 20px 0;
-        }
-
-        /* ---- App frame: header 30% / main 60% (step 3) ---- */
-        .app-frame {
-            display: flex;
-            flex-direction: column;
-            height: 78vh;
-        }
-
-        .app-header {
-            min-height: 30%;
-            flex-shrink: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            border-bottom: 1px solid var(--line);
-            padding-bottom: 12px;
-            margin-bottom: 12px;
-        }
-
-        .app-main {
-            flex: 1;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .tabs {
-            display: flex;
-            gap: 8px;
-            margin-top: 12px;
-            flex-wrap: wrap;
-        }
-
-        .tab-btn {
-            background: rgba(255, 255, 255, 0.5);
-            border: 1px solid var(--line);
-            color: var(--dusk);
-            padding: 7px 14px;
-            border-radius: 14px;
-            font-size: 0.8rem;
-            cursor: pointer;
-            font-family: 'Work Sans', sans-serif;
-        }
-
-        .tab-btn.active {
-            background: var(--seal);
-            color: #24331f;
-            border-color: var(--seal);
-        }
-
-        .msg-item {
-            background: rgba(255, 255, 255, 0.55);
-            border: 1px solid var(--line);
-            border-radius: 6px;
-            padding: 12px 14px;
-            margin-bottom: 10px;
-        }
-
-        .msg-author {
-            font-size: 0.78rem;
-            color: var(--gold);
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .msg-text {
-            font-size: 0.9rem;
-            white-space: pre-wrap;
-            word-break: break-word;
-            margin: 0 0 8px;
-        }
-
-        .msg-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .msg-expiry {
-            color: var(--dusk);
-            font-size: 0.7rem;
-        }
-
-        .msg-actions {
-            display: flex;
-            gap: 12px;
-        }
-
-        .alter-btn {
-            background: none;
-            border: none;
-            color: var(--gold);
-            cursor: pointer;
-            font-size: 0.72rem;
-            padding: 0;
-            text-decoration: underline;
-        }
-
-        /* Star / like button on messages */
-        .like-btn {
-            background: none;
-            border: none;
-            font-size: 1rem;
-            cursor: pointer;
-            padding: 0;
-            line-height: 1;
+            box-shadow:
+                4px 4px 10px var(--clay-shadow-dark),
+                -2px -2px 6px var(--clay-shadow-light),
+                inset -2px -2px 4px var(--clay-inner-dark),
+                inset 2px 2px 4px var(--clay-inner-light);
             transition: transform 0.15s ease;
         }
 
-        .like-btn:hover {
-            transform: scale(1.25);
+        .social-icon-btn:hover {
+            transform: translateY(-2px);
         }
 
-        .like-btn:active {
-            transform: scale(0.9);
+        .social-icon-btn:active {
+            transform: scale(0.95);
+            box-shadow:
+                inset 2px 2px 5px var(--clay-shadow-dark),
+                inset -1px -1px 3px var(--clay-shadow-light);
         }
 
-        .composer {
-            margin-top: 12px;
-            flex-shrink: 0;
+        /* App view fallback clay elements */
+        .app-frame {
+            background: var(--leetcode-card-bg);
+            border-radius: 28px;
+            box-shadow:
+                14px 18px 36px var(--clay-shadow-dark),
+                -12px -12px 28px var(--clay-shadow-light),
+                inset -6px -6px 14px var(--clay-inner-dark),
+                inset 6px 6px 14px var(--clay-inner-light);
         }
 
-        .save-btn {
-            margin-top: 8px;
-            background: var(--seal);
-            color: #24331f;
-            border: none;
-            padding: 10px 16px;
-            border-radius: 14px;
-            font-family: 'Work Sans', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 500;
-            cursor: pointer;
-        }
-
-        .editing-banner {
-            font-size: 0.75rem;
-            color: var(--gold);
-            margin-top: 6px;
-        }
-    
-        /* ============================
-           DARK THEME (LeetCode Dark)
-        ============================ */
-        [data-theme="dark"] {
-            --leetcode-bg: #1a1a1a;
-            --leetcode-card-bg: #282828;
-            --leetcode-orange: #FFA116;
-            --leetcode-dark: #eff1f6;
-            --leetcode-btn: #3e4852;
-            --leetcode-btn-hover: #4e5b67;
-            --leetcode-border: #383838;
-            --leetcode-muted: #8c8c8c;
-            --leetcode-text: #eff1f6;
-
-            --bg: #1a1a1a;
-            --surface: #282828;
-            --ink: #eff1f6;
-            --dusk: #8c8c8c;
-            --seal: #FFA116;
-            --seal-start: #3e4852;
-            --seal-end: #2d3840;
-            --gold: #FFA116;
-            --line: #383838;
-            --card-bg: #282828;
-        }
-
-        [data-theme="dark"] body {
-            background: #1a1a1a;
-            color: var(--leetcode-text);
-        }
-
-        [data-theme="dark"] .leetcode-nav {
-            background: #262626;
-            border-bottom-color: #383838;
-        }
-
-        [data-theme="dark"] .leetcode-nav-links a {
-            color: #a0a0a0;
-        }
-
-        [data-theme="dark"] .leetcode-nav-links a:hover {
-            color: #eff1f6;
-        }
-
-        [data-theme="dark"] .leetcode-search {
-            background: #333333;
-            color: #a0a0a0;
-        }
-
-        [data-theme="dark"] .leetcode-icon-btn {
-            color: #a0a0a0;
-        }
-
-        [data-theme="dark"] .leetcode-card {
-            background: #282828;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
-        }
-
-        [data-theme="dark"] .leetcode-brand-name {
-            color: #eff1f6;
-        }
-
-        [data-theme="dark"] .leetcode-input {
-            background: #333333;
-            border-color: #3e3e3e;
-            color: #eff1f6;
-        }
-
-        [data-theme="dark"] .leetcode-input:focus {
-            border-color: #FFA116;
-        }
-
-        [data-theme="dark"] .captcha-box {
-            background: #222222;
-            border-color: #383838;
-        }
-
-        [data-theme="dark"] .captcha-text {
-            color: #cccccc;
-        }
-
-        [data-theme="dark"] .social-icon-btn {
-            background: #333333;
-            color: #a0a0a0;
-        }
-
-        [data-theme="dark"] .social-icon-btn:hover {
-            background: #404040;
-        }
-
-        [data-theme="dark"] .leetcode-card-links a {
-            color: #8c8c8c;
-        }
-
-        [data-theme="dark"] .leetcode-card-links a:hover {
-            color: #eff1f6;
-        }
-
-        [data-theme="dark"] textarea {
-            background: #333333;
-            border-color: #3e3e3e;
-            color: #eff1f6;
-        }
-
-        [data-theme="dark"] .note-item {
-            background: #262626;
-            border-color: #383838;
-        }
-
-        [data-theme="dark"] .app-frame {
-            background: #262626;
-        }
-
-        [data-theme="dark"] .tab-btn {
-            color: #a0a0a0;
-        }
-
-        [data-theme="dark"] .tab-btn.active {
-            color: #FFA116;
-            border-bottom-color: #FFA116;
+        .note-item {
+            background: var(--leetcode-card-bg);
+            border-radius: 16px;
+            box-shadow:
+                6px 8px 18px var(--clay-shadow-dark),
+                -4px -4px 12px var(--clay-shadow-light),
+                inset -2px -2px 5px var(--clay-inner-dark),
+                inset 2px 2px 5px var(--clay-inner-light);
         }
     </style>
 </head>
@@ -741,10 +503,10 @@
         </div>
         <div class="leetcode-nav-right">
             <div class="leetcode-search">
-                🔍 Search
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Search
             </div>
-            <button class="leetcode-icon-btn">🔔</button>
-            <button class="leetcode-icon-btn">🔥 0</button>
+            <button class="leetcode-icon-btn" aria-label="Notifications"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></button>
+            <button class="leetcode-icon-btn" aria-label="Streak" style="gap:4px;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>0</button>
             <button class="leetcode-premium-btn">Premium</button>
         </div>
     </nav>
@@ -799,7 +561,7 @@
 
                 <div class="captcha-box">
                     <div class="captcha-left">
-                        <div class="captcha-check">✓</div>
+                        <div class="captcha-check"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
                         <span class="captcha-text">Success!</span>
                     </div>
                     <div class="cloudflare-logo">
@@ -821,7 +583,7 @@
 
                 <div class="social-icons">
                     <div class="social-icon-btn">G</div>
-                    <div class="social-icon-btn">🐱</div>
+                    <div class="social-icon-btn" aria-label="GitHub"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg></div>
                     <div class="social-icon-btn">f</div>
                     <div class="social-icon-btn">...</div>
                 </div>
@@ -1132,7 +894,7 @@
                   <div class="msg-actions">
                     <button class="like-btn" data-id="${m.id}" data-action="like"
                       title="${isLiked(m.id) ? 'Remove from favourites' : 'Add to favourites'}">
-                      ${isLiked(m.id) ? '⭐' : '☆'}
+                      ${isLiked(m.id) ? '★' : '☆'}
                     </button>
                     <button class="alter-btn" data-id="${m.id}" data-action="alter">alter</button>
                     <button class="delete-btn" data-id="${m.id}" data-action="delete">delete</button>
@@ -1174,7 +936,7 @@
                     toggleLike(msg);
                     // Re-render just this button to give instant feedback
                     const liked = isLiked(msg.id);
-                    btn.textContent = liked ? '⭐' : '☆';
+                    btn.textContent = liked ? '★' : '☆';
                     btn.title = liked ? 'Remove from favourites' : 'Add to favourites';
                 };
             });

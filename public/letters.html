@@ -16,13 +16,14 @@
     rel="stylesheet" />
 
   <style>
-    /* ============================
-       CSS CUSTOM PROPERTIES
-    ============================ */
+    /* ============================================================
+       CLAYMORPHISM DESIGN SYSTEM — OUR LETTERS
+    ============================================================ */
     :root {
       --bg-start: #eef0e2;
       --bg-end: #f8f5ec;
-      --surface: rgba(255, 255, 255, 0.5);
+      --surface: #f4f1e6;
+      --surface-elevated: #fbf9f3;
       --ink: #33422f;
       --dusk: #8a9683;
       --seal-start: #c3d6ac;
@@ -37,11 +38,53 @@
       --on-surface-variant: #42493f;
       --outline: #72796f;
       --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+
+      /* Clay Shadows (Light Mode) */
+      --clay-shadow-dark: rgba(120, 140, 100, 0.32);
+      --clay-shadow-light: rgba(255, 255, 255, 0.90);
+      --clay-inner-dark: rgba(120, 140, 100, 0.18);
+      --clay-inner-light: rgba(255, 255, 255, 0.85);
+
+      --btn-clay-shadow:
+        6px 8px 18px var(--clay-shadow-dark),
+        -4px -4px 12px var(--clay-shadow-light),
+        inset 2px 2px 5px var(--clay-inner-light),
+        inset -2px -2px 5px var(--clay-inner-dark);
     }
 
-    /* ============================
-       RESET & BASE
-    ============================ */
+    /* Dark theme overrides */
+    [data-theme="dark"] {
+      --bg-start: #161a12;
+      --bg-end: #1a1e16;
+      --surface: #22291d;
+      --surface-elevated: #283023;
+      --ink: #e8eed8;
+      --dusk: #8a9683;
+      --seal-start: #4a633e;
+      --seal-end: #2d4224;
+      --seal: #a9d6a0;
+      --gold: #d4b574;
+      --line: #2f3a28;
+      --primary: #a9d6a0;
+      --primary-container: #2e3d2a;
+      --on-primary-container: #c5e6bc;
+      --surface-variant: #283023;
+      --on-surface-variant: #b8c4b2;
+      --outline: #5c6656;
+
+      /* Clay Shadows (Dark Mode) */
+      --clay-shadow-dark: rgba(0, 0, 0, 0.55);
+      --clay-shadow-light: rgba(255, 255, 255, 0.06);
+      --clay-inner-dark: rgba(0, 0, 0, 0.38);
+      --clay-inner-light: rgba(255, 255, 255, 0.08);
+
+      --btn-clay-shadow:
+        6px 8px 18px var(--clay-shadow-dark),
+        -4px -4px 12px var(--clay-shadow-light),
+        inset 2px 2px 5px var(--clay-inner-light),
+        inset -2px -2px 5px var(--clay-inner-dark);
+    }
+
     *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
@@ -52,24 +95,27 @@
 
     body {
       font-family: 'Poppins', Arial, sans-serif;
-      background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-end) 100%);
+      background: radial-gradient(ellipse at top, var(--bg-start) 0%, var(--bg-end) 65%);
       color: var(--ink);
       min-height: 100vh;
       -webkit-font-smoothing: antialiased;
+      transition: background var(--transition), color var(--transition);
     }
 
-    /* ============================
-       TOP NAV BAR
-    ============================ */
+    /* ============================================================
+       TOP NAV BAR — Clay Floating Header
+    ============================================================ */
     .top-nav {
       position: sticky;
       top: 0;
       z-index: 50;
-      background: rgba(255, 255, 255, 0.4);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 4px 20px rgba(51, 66, 47, 0.08);
+      background: var(--surface);
+      border-radius: 0 0 24px 24px;
+      box-shadow:
+        0 10px 24px var(--clay-shadow-dark),
+        inset 0 4px 10px var(--clay-inner-light),
+        inset 0 -6px 14px var(--clay-inner-dark);
+      transition: background var(--transition), box-shadow var(--transition);
     }
 
     .nav-inner {
@@ -87,22 +133,27 @@
       gap: 16px;
     }
 
+    /* Raised circular clay badge */
     .nav-logo {
-      width: 40px;
-      height: 40px;
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
-      background: var(--primary-container);
+      background: var(--surface-elevated);
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+      box-shadow:
+        6px 6px 14px var(--clay-shadow-dark),
+        -4px -4px 10px var(--clay-shadow-light),
+        inset -3px -3px 6px var(--clay-inner-dark),
+        inset 3px 3px 6px var(--clay-inner-light);
     }
 
     .nav-logo span {
       font-family: 'Fraunces', serif;
       font-weight: 700;
-      font-size: 1rem;
-      color: var(--on-primary-container);
+      font-size: 1.05rem;
+      color: var(--ink);
     }
 
     .nav-title {
@@ -115,57 +166,71 @@
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 24px;
+      gap: 16px;
+    }
+
+    .nav-link,
+    .nav-link-inactive {
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.88rem;
+      text-decoration: none;
+      padding: 8px 18px;
+      border-radius: 9999px;
+      transition: all 0.2s ease;
     }
 
     .nav-link {
-      font-family: 'Poppins', sans-serif;
-      font-size: 0.85rem;
       font-weight: 600;
+      background: var(--surface-elevated);
       color: var(--primary);
-      text-decoration: none;
-      padding-bottom: 4px;
-      border-bottom: 2px solid var(--primary);
-      transition: opacity 0.2s ease;
+      box-shadow:
+        inset 2px 2px 5px var(--clay-inner-dark),
+        inset -2px -2px 5px var(--clay-inner-light);
     }
 
-    .nav-link:hover { opacity: 0.7; }
-
     .nav-link-inactive {
-      font-family: 'Poppins', sans-serif;
-      font-size: 0.85rem;
       font-weight: 500;
       color: var(--on-surface-variant);
-      text-decoration: none;
-      padding-bottom: 4px;
-      border-bottom: 2px solid transparent;
-      transition: color 0.2s ease, border-color 0.2s ease;
     }
 
     .nav-link-inactive:hover {
       color: var(--primary);
-      border-bottom-color: var(--primary);
+      background: rgba(0, 0, 0, 0.04);
     }
 
     .nav-icon-btn {
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
       border: none;
-      background: transparent;
+      background: var(--surface-elevated);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--on-surface-variant);
+      color: var(--primary);
       cursor: pointer;
-      transition: background 0.2s ease;
+      box-shadow:
+        6px 6px 14px var(--clay-shadow-dark),
+        -4px -4px 10px var(--clay-shadow-light),
+        inset -3px -3px 6px var(--clay-inner-dark),
+        inset 3px 3px 6px var(--clay-inner-light);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
-    .nav-icon-btn:hover { background: rgba(218, 230, 209, 0.5); }
+    .nav-icon-btn:hover {
+      transform: translateY(-2px);
+    }
 
-    /* ============================
+    .nav-icon-btn:active {
+      transform: scale(0.96);
+      box-shadow:
+        inset 3px 3px 6px var(--clay-shadow-dark),
+        inset -2px -2px 5px var(--clay-shadow-light);
+    }
+
+    /* ============================================================
        MAIN CONTENT
-    ============================ */
+    ============================================================ */
     .page-main {
       max-width: 750px;
       margin: 0 auto;
@@ -186,29 +251,30 @@
 
     .page-header p {
       font-size: 0.95rem;
-      color: var(--on-surface-variant);
+      color: var(--dusk);
     }
 
-    /* ============================
-       GLASS PANEL
-    ============================ */
-    .glass-panel {
+    /* ============================================================
+       CLAY PANEL (Replaces Glass Panel)
+    ============================================================ */
+    .glass-panel,
+    .clay-panel {
       background: var(--surface);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-top: 1px solid rgba(255, 255, 255, 0.4);
-      border-left: 1px solid rgba(255, 255, 255, 0.4);
-      border-right: 1px solid rgba(255, 255, 255, 0.15);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 20px;
-      box-shadow: 0 4px 20px rgba(51, 66, 47, 0.08);
+      border-radius: 28px;
+      box-shadow:
+        12px 14px 28px var(--clay-shadow-dark),
+        -10px -10px 24px var(--clay-shadow-light),
+        inset -6px -6px 14px var(--clay-inner-dark),
+        inset 6px 6px 14px var(--clay-inner-light);
+      border: none;
+      transition: background var(--transition), box-shadow var(--transition);
     }
 
-    /* ============================
+    /* ============================================================
        COMPOSER SECTION
-    ============================ */
+    ============================================================ */
     .composer {
-      padding: clamp(18px, 2.5vw, 24px);
+      padding: clamp(20px, 2.8vw, 28px);
       display: flex;
       flex-direction: column;
       min-height: 320px;
@@ -229,30 +295,35 @@
       flex: 1;
     }
 
+    /* Inset clay input styles */
     .composer-input,
     .composer-textarea {
       width: 100%;
-      background: rgba(248, 250, 230, 0.6);
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      padding: 14px 16px;
+      background: rgba(0, 0, 0, 0.03);
+      border: none;
+      border-radius: 16px;
+      padding: 14px 18px;
       font-family: 'Poppins', sans-serif;
       font-size: 0.92rem;
       color: var(--ink);
       outline: none;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.04);
+      box-shadow:
+        inset 3px 3px 7px var(--clay-inner-dark),
+        inset -2px -2px 6px var(--clay-inner-light);
+      transition: box-shadow 0.2s ease;
     }
 
-    .composer-input::placeholder,
-    .composer-textarea::placeholder {
-      color: var(--outline);
+    [data-theme="dark"] .composer-input,
+    [data-theme="dark"] .composer-textarea {
+      background: rgba(0, 0, 0, 0.25);
     }
 
     .composer-input:focus,
     .composer-textarea:focus {
-      border-color: var(--primary-container);
-      box-shadow: 0 0 0 3px rgba(169, 214, 160, 0.3), inset 0 1px 3px rgba(0, 0, 0, 0.04);
+      box-shadow:
+        inset 3px 3px 7px var(--clay-inner-dark),
+        inset -2px -2px 6px var(--clay-inner-light),
+        0 0 0 2px var(--primary);
     }
 
     .composer-input {
@@ -261,9 +332,14 @@
 
     .composer-textarea {
       flex: 1;
-      min-height: 180px;
+      min-height: 160px;
       resize: none;
       margin-bottom: 16px;
+    }
+
+    .composer-input::placeholder,
+    .composer-textarea::placeholder {
+      color: var(--outline);
     }
 
     .composer-footer {
@@ -273,179 +349,107 @@
     }
 
     .composer-heart-btn {
-      background: none;
+      background: var(--surface-elevated);
       border: none;
-      color: var(--outline);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      color: var(--primary);
       cursor: pointer;
       display: flex;
       align-items: center;
-      transition: color 0.2s ease, transform 0.15s ease;
+      justify-content: center;
+      box-shadow:
+        4px 4px 10px var(--clay-shadow-dark),
+        -3px -3px 8px var(--clay-shadow-light),
+        inset -2px -2px 4px var(--clay-inner-dark),
+        inset 2px 2px 4px var(--clay-inner-light);
+      transition: transform 0.2s ease;
     }
 
-    .composer-heart-btn:hover { color: var(--primary); transform: scale(1.15); }
+    .composer-heart-btn:hover {
+      transform: scale(1.1);
+    }
 
+    /* Raised clay pill publish button */
     .publish-btn {
       background: linear-gradient(135deg, var(--seal-start), var(--seal-end));
       color: #1e3019;
       border: none;
       border-radius: 9999px;
-      padding: 10px 28px;
+      padding: 12px 32px;
       font-family: 'Poppins', sans-serif;
-      font-size: 0.88rem;
+      font-size: 0.90rem;
       font-weight: 600;
       cursor: pointer;
-      box-shadow: 0 2px 8px rgba(143, 168, 120, 0.3);
+      box-shadow: var(--btn-clay-shadow);
       transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease;
     }
 
     .publish-btn:hover {
-      background: linear-gradient(135deg, var(--seal-end), var(--primary));
-      color: #ffffff;
-      box-shadow: 0 4px 16px rgba(143, 168, 120, 0.4);
-      transform: translateY(-1px);
+      transform: translateY(-2px);
+      box-shadow:
+        8px 10px 22px var(--clay-shadow-dark),
+        -5px -5px 14px var(--clay-shadow-light),
+        inset 2px 2px 5px var(--clay-inner-light),
+        inset -2px -2px 5px var(--clay-inner-dark);
     }
 
-    .publish-btn:active { transform: translateY(0) scale(0.97); }
+    .publish-btn:active {
+      transform: scale(0.97);
+      box-shadow:
+        inset 4px 4px 10px var(--clay-shadow-dark),
+        inset -3px -3px 8px var(--clay-shadow-light);
+    }
 
-    /* ============================
-       LETTER CARDS
-    ============================ */
+    [data-theme="dark"] .publish-btn {
+      background: linear-gradient(135deg, #40683c, #2a4727);
+      color: #e8eed8;
+    }
+
+    /* ============================================================
+       LETTER CARDS (Clay Cards)
+    ============================================================ */
     .letters-list {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 16px;
       max-height: 800px;
       overflow-y: auto;
-      padding-right: 4px;
-      padding-bottom: 8px;
+      padding: 6px 4px 12px;
     }
 
-    .letters-list::-webkit-scrollbar { width: 4px; }
+    .letters-list::-webkit-scrollbar { width: 5px; }
     .letters-list::-webkit-scrollbar-track { background: transparent; }
-    .letters-list::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; }
+    .letters-list::-webkit-scrollbar-thumb { background: var(--line); border-radius: 6px; }
 
     .letter-card {
-      padding: 20px 24px;
-      border-radius: 16px;
+      background: var(--surface);
+      border-radius: 24px;
+      padding: 22px 24px;
       cursor: pointer;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      max-height: 90px;
-      overflow: hidden;
+      box-shadow:
+        10px 12px 24px var(--clay-shadow-dark),
+        -8px -8px 20px var(--clay-shadow-light),
+        inset -4px -4px 10px var(--clay-inner-dark),
+        inset 4px 4px 10px var(--clay-inner-light);
+      border: none;
+      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1), background var(--transition);
+      position: relative;
     }
 
     .letter-card:hover {
-      max-height: 500px;
-      background: rgba(255, 255, 255, 0.8);
-      box-shadow: 0 8px 30px rgba(51, 66, 47, 0.12);
+      transform: translateY(-3px);
+      box-shadow:
+        14px 16px 30px var(--clay-shadow-dark),
+        -10px -10px 24px var(--clay-shadow-light),
+        inset -4px -4px 10px var(--clay-inner-dark),
+        inset 4px 4px 10px var(--clay-inner-light);
     }
 
-    .letter-inner {
-      display: flex;
-      align-items: flex-start;
-      gap: 16px;
-    }
-
-    .letter-avatar {
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      font-family: 'Fraunces', serif;
-      font-weight: 700;
-      font-size: 1.15rem;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-    }
-
-    .letter-avatar.green {
-      background: var(--primary-container);
-      color: var(--on-primary-container);
-    }
-
-    .letter-avatar.grey {
-      background: var(--surface-variant);
-      color: var(--on-surface-variant);
-    }
-
-    .letter-body {
-      flex: 1;
-      padding-top: 2px;
-    }
-
-    .letter-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 8px;
-    }
-
-    .letter-title {
-      font-family: 'Poppins', sans-serif;
-      font-size: 0.88rem;
-      font-weight: 600;
-      color: var(--primary);
-      letter-spacing: 0.01em;
-    }
-
-    .letter-meta {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .letter-heart-btn {
-      background: none;
-      border: none;
-      color: var(--outline);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      opacity: 0;
-      transition: opacity 0.2s ease, color 0.2s ease, transform 0.15s ease;
-    }
-
-    .letter-card:hover .letter-heart-btn { opacity: 1; }
-    .letter-heart-btn:hover { color: var(--primary); transform: scale(1.2); }
-    .letter-heart-btn.active { color: var(--primary); opacity: 1; }
-
-    .letter-date {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      background: rgba(166, 138, 82, 0.1);
-      color: #785f2c;
-      padding: 4px 12px;
-      border-radius: 9999px;
-      font-size: 0.72rem;
-      font-weight: 500;
-      border: 1px solid rgba(166, 138, 82, 0.2);
-      white-space: nowrap;
-    }
-
-    .letter-date .material-symbols-outlined {
-      font-size: 14px;
-    }
-
-    .letter-content {
-      font-size: 0.92rem;
-      color: var(--on-surface-variant);
-      line-height: 1.6;
-      display: -webkit-box;
-      -webkit-line-clamp: 1;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      transition: all 0.4s ease;
-    }
-
-    .letter-card:hover .letter-content {
-      -webkit-line-clamp: unset;
-    }
-
-    /* ============================
+    /* ============================================================
        FOOTER
-    ============================ */
+    ============================================================ */
     .page-footer {
       max-width: 1100px;
       margin: 64px auto 0;
@@ -454,19 +458,19 @@
       flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      opacity: 0.6;
+      opacity: 0.75;
       gap: 16px;
     }
 
     .footer-brand {
       font-family: 'Fraunces', serif;
-      font-size: 0.85rem;
+      font-size: 0.95rem;
       font-weight: 700;
       color: var(--ink);
     }
 
     .footer-copy {
-      font-size: 0.82rem;
+      font-size: 0.84rem;
       color: var(--dusk);
       text-align: center;
     }
@@ -477,18 +481,17 @@
     }
 
     .footer-link {
-      font-size: 0.82rem;
+      font-size: 0.84rem;
       color: var(--on-surface-variant);
-      text-decoration: underline;
-      text-decoration-color: rgba(64, 104, 60, 0.3);
-      transition: opacity 0.2s ease;
+      text-decoration: none;
+      transition: color 0.2s ease;
     }
 
-    .footer-link:hover { opacity: 0.7; }
+    .footer-link:hover { color: var(--primary); }
 
-    /* ============================
-       ANIMATIONS
-    ============================ */
+    /* ============================================================
+       ANIMATIONS & RESPONSIVE
+    ============================================================ */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(12px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -498,103 +501,12 @@
     .composer     { animation: fadeUp 0.6s ease 0.1s both; }
     .letters-list { animation: fadeUp 0.6s ease 0.2s both; }
 
-    .letter-card {
-      animation: fadeUp 0.4s ease both;
-    }
-
-    .letter-card:nth-child(1) { animation-delay: 0.25s; }
-    .letter-card:nth-child(2) { animation-delay: 0.35s; }
-    .letter-card:nth-child(3) { animation-delay: 0.45s; }
-
-    /* ============================
-       RESPONSIVE
-    ============================ */
     @media (max-width: 640px) {
       .nav-links { display: none; }
       .page-main { padding: 20px 14px 36px; gap: 20px; }
-      .composer { padding: 16px; min-height: 280px; }
-      .letter-card { padding: 14px; }
-      .letter-date { display: none; }
+      .composer { padding: 18px; min-height: 280px; }
+      .letter-card { padding: 16px; border-radius: 20px; }
       .page-footer { flex-direction: column; text-align: center; }
-    }
-  
-    /* ============================
-       DARK THEME
-    ============================ */
-    [data-theme="dark"] {
-      --bg-start: #161a12;
-      --bg-end: #1a1e16;
-      --surface: rgba(34, 41, 29, 0.75);
-      --ink: #e8eed8;
-      --dusk: #8a9683;
-      --seal-start: #4a633e;
-      --seal-end: #2d4224;
-      --seal: #a9d6a0;
-      --gold: #d4b574;
-      --line: #2f3a28;
-      --primary: #a9d6a0;
-      --primary-container: #2e3d2a;
-      --on-primary-container: #c5e6bc;
-      --surface-variant: #283023;
-      --on-surface-variant: #b8c4b2;
-      --outline: #5c6656;
-    }
-
-    [data-theme="dark"] .top-nav {
-      background: rgba(26, 30, 22, 0.75);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-    }
-
-    [data-theme="dark"] .glass-panel {
-      background: rgba(34, 41, 29, 0.75);
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      border-left: 1px solid rgba(255, 255, 255, 0.1);
-      border-right: 1px solid rgba(0, 0, 0, 0.3);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.3);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
-    }
-
-    [data-theme="dark"] .composer-input,
-    [data-theme="dark"] .composer-textarea {
-      background: rgba(22, 26, 18, 0.65);
-      border-color: var(--line);
-      color: var(--ink);
-    }
-
-    [data-theme="dark"] .publish-btn {
-      background: linear-gradient(135deg, #40683c, #2a4727);
-      color: #e8eed8;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-    }
-
-    [data-theme="dark"] .publish-btn:hover {
-      background: linear-gradient(135deg, #4d7a48, #355831);
-      color: #ffffff;
-      box-shadow: 0 4px 16px rgba(77, 122, 72, 0.4);
-    }
-
-    [data-theme="dark"] .letter-card:hover {
-      background: rgba(40, 48, 35, 0.9);
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
-    }
-
-    [data-theme="dark"] .nav-icon-btn:hover {
-      background: rgba(40, 48, 35, 0.6);
-    }
-
-    [data-theme="dark"] .nav-link-inactive {
-      color: #8a9683;
-    }
-
-    [data-theme="dark"] .nav-link-inactive:hover {
-      color: var(--primary);
-    }
-
-    [data-theme="dark"] .letter-date {
-      background: rgba(166, 138, 82, 0.18);
-      color: #d6bb7f;
-      border: 1px solid rgba(166, 138, 82, 0.3);
     }
   </style>
 </head>
@@ -715,7 +627,7 @@
         
         if (!lettersList) return;
         if (notes.length === 0) {
-          lettersList.innerHTML = `<p style="text-align:center;opacity:0.6;padding:24px;">No letters yet. Write the first one above! 💌</p>`;
+          lettersList.innerHTML = `<p style="text-align:center;opacity:0.6;padding:24px;">No letters yet. Write the first one above!</p>`;
           return;
         }
 
