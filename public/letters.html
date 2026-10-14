@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 
 <head>
   <meta charset="UTF-8" />
@@ -517,6 +517,85 @@
       .letter-date { display: none; }
       .page-footer { flex-direction: column; text-align: center; }
     }
+  
+    /* ============================
+       DARK THEME
+    ============================ */
+    [data-theme="dark"] {
+      --bg-start: #161a12;
+      --bg-end: #1a1e16;
+      --surface: rgba(34, 41, 29, 0.75);
+      --ink: #e8eed8;
+      --dusk: #8a9683;
+      --seal-start: #4a633e;
+      --seal-end: #2d4224;
+      --seal: #a9d6a0;
+      --gold: #d4b574;
+      --line: #2f3a28;
+      --primary: #a9d6a0;
+      --primary-container: #2e3d2a;
+      --on-primary-container: #c5e6bc;
+      --surface-variant: #283023;
+      --on-surface-variant: #b8c4b2;
+      --outline: #5c6656;
+    }
+
+    [data-theme="dark"] .top-nav {
+      background: rgba(26, 30, 22, 0.75);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    [data-theme="dark"] .glass-panel {
+      background: rgba(34, 41, 29, 0.75);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      border-left: 1px solid rgba(255, 255, 255, 0.1);
+      border-right: 1px solid rgba(0, 0, 0, 0.3);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+    }
+
+    [data-theme="dark"] .composer-input,
+    [data-theme="dark"] .composer-textarea {
+      background: rgba(22, 26, 18, 0.65);
+      border-color: var(--line);
+      color: var(--ink);
+    }
+
+    [data-theme="dark"] .publish-btn {
+      background: linear-gradient(135deg, #40683c, #2a4727);
+      color: #e8eed8;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+
+    [data-theme="dark"] .publish-btn:hover {
+      background: linear-gradient(135deg, #4d7a48, #355831);
+      color: #ffffff;
+      box-shadow: 0 4px 16px rgba(77, 122, 72, 0.4);
+    }
+
+    [data-theme="dark"] .letter-card:hover {
+      background: rgba(40, 48, 35, 0.9);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    [data-theme="dark"] .nav-icon-btn:hover {
+      background: rgba(40, 48, 35, 0.6);
+    }
+
+    [data-theme="dark"] .nav-link-inactive {
+      color: #8a9683;
+    }
+
+    [data-theme="dark"] .nav-link-inactive:hover {
+      color: var(--primary);
+    }
+
+    [data-theme="dark"] .letter-date {
+      background: rgba(166, 138, 82, 0.18);
+      color: #d6bb7f;
+      border: 1px solid rgba(166, 138, 82, 0.3);
+    }
   </style>
 </head>
 
@@ -692,6 +771,10 @@
     // Load letters on page load and auto-refresh every 5 seconds for real-time sharing across devices
     loadLetters();
     setInterval(loadLetters, 5000);
+  
+    // Apply saved or default dark theme
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
   </script>
 </body>
 

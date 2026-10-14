@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 
 <head>
   <meta charset="UTF-8" />
@@ -101,7 +101,7 @@
 
     html, body {
       max-width: 100%;
-      overflow-x: hidden;
+      overflow-x: clip;
     }
 
     body {
@@ -846,21 +846,19 @@
       background: #1e251b;
     }
 
-    /* Three-column grid: left / center / right */
+    /* Footer layout */
     .footer-grid {
-      display: grid;
-      grid-template-columns: 1fr 1.2fr 1fr;
-      grid-template-rows: auto auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       gap: 16px 20px;
-      align-items: start;
       max-width: 900px;
       margin: 0 auto;
     }
 
     /* ---- Left column — names ---- */
     .footer-names {
-      grid-column: 1;
-      grid-row: 1;
+      text-align: left;
     }
 
     .footer-name-line {
@@ -876,38 +874,8 @@
       font-size: 0.88rem;
     }
 
-    /* ---- Center column — quote ---- */
-    .footer-quote {
-      grid-column: 2;
-      grid-row: 1;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .quote-mark {
-      font-family: 'Fraunces', serif;
-      font-size: 2.6rem;
-      color: var(--seal-end);
-      line-height: 0.6;
-      opacity: 0.7;
-    }
-
-    .quote-text {
-      font-family: 'Fraunces', serif;
-      font-size: 0.90rem;
-      font-style: italic;
-      color: var(--ink);
-      line-height: 1.6;
-      opacity: 0.85;
-    }
-
     /* ---- Right column — love message ---- */
     .footer-message {
-      grid-column: 3;
-      grid-row: 1;
       text-align: right;
     }
 
@@ -917,23 +885,6 @@
       font-style: italic;
       color: var(--gold);
       line-height: 1.6;
-    }
-
-    /* ---- Declaration — full width, bottom ---- */
-    .footer-declaration {
-      grid-column: 1 / -1;
-      grid-row: 2;
-      text-align: center;
-      padding-top: 14px;
-      border-top: 1px solid rgba(120, 140, 100, 0.2);
-    }
-
-    .footer-decl-text {
-      font-family: 'Fraunces', serif;
-      font-size: 0.82rem;
-      color: var(--dusk);
-      font-style: italic;
-      letter-spacing: 0.3px;
     }
 
     /* ============================================================
@@ -1146,11 +1097,6 @@
 
       .footer-names,
       .footer-message { text-align: left; }
-      .footer-quote { align-items: flex-start; }
-      .footer-declaration {
-        width: 100%;
-        text-align: left;
-      }
     }
 
     @media (max-width: 480px) {
@@ -1227,9 +1173,7 @@
     <!-- Centered message placeholder -->
     <div class="header-message">
       <p class="message-text" id="headerMessage">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Quisque vehicula felis vel eros malesuada, nec tempus urna tincidunt.
-        Nulla facilisi — sed tristique ligula nec sapien ullamcorper.
+        As long as im alive i'll protect you
       </p>
     </div>
   </header>
@@ -1356,16 +1300,6 @@
         <div class="footer-name-line">us &nbsp;&nbsp;&nbsp;<strong>Mikasa Eren</strong></div>
       </div>
 
-      <!-- Center: quote -->
-      <div class="footer-quote">
-        <span class="quote-mark">"</span>
-        <p class="quote-text">
-          In the quiet spaces between heartbeats,<br />
-          you live — endlessly, effortlessly.
-        </p>
-        <span class="quote-mark" style="transform:rotate(180deg);display:block;">"</span>
-      </div>
-
       <!-- Right: love message -->
       <div class="footer-message">
         <p class="footer-msg-text">
@@ -1373,14 +1307,6 @@
           Mera life ka pyaar.
         </p>
       </div>
-
-      <!-- Declaration — full-width bottom row -->
-      <div class="footer-declaration">
-        <p class="footer-decl-text">
-          Lorem ipsum dolor sit amet — consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        </p>
-      </div>
-
     </div>
   </footer>
 
@@ -1471,17 +1397,26 @@
     // Theme toggle
     // ============================
     const themeToggle = document.getElementById('themeToggle');
-    const savedTheme  = localStorage.getItem('theme') || 'light';
+    let savedTheme = localStorage.getItem('theme');
+    if (!savedTheme) {
+      savedTheme = 'dark';
+      localStorage.setItem('theme', 'dark');
+    }
     if (savedTheme === 'dark') {
       document.documentElement.setAttribute('data-theme', 'dark');
-      themeToggle.checked = true;
+      if (themeToggle) themeToggle.checked = true;
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+      if (themeToggle) themeToggle.checked = false;
     }
 
-    themeToggle.addEventListener('change', () => {
-      const dark = themeToggle.checked;
-      document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
-      localStorage.setItem('theme', dark ? 'dark' : 'light');
-    });
+    if (themeToggle) {
+      themeToggle.addEventListener('change', () => {
+        const dark = themeToggle.checked;
+        document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+        localStorage.setItem('theme', dark ? 'dark' : 'light');
+      });
+    }
 
     // ============================
     // Background image

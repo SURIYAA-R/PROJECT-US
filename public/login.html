@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 
 <head>
     <meta charset="UTF-8">
@@ -594,6 +594,128 @@
             color: var(--gold);
             margin-top: 6px;
         }
+    
+        /* ============================
+           DARK THEME (LeetCode Dark)
+        ============================ */
+        [data-theme="dark"] {
+            --leetcode-bg: #1a1a1a;
+            --leetcode-card-bg: #282828;
+            --leetcode-orange: #FFA116;
+            --leetcode-dark: #eff1f6;
+            --leetcode-btn: #3e4852;
+            --leetcode-btn-hover: #4e5b67;
+            --leetcode-border: #383838;
+            --leetcode-muted: #8c8c8c;
+            --leetcode-text: #eff1f6;
+
+            --bg: #1a1a1a;
+            --surface: #282828;
+            --ink: #eff1f6;
+            --dusk: #8c8c8c;
+            --seal: #FFA116;
+            --seal-start: #3e4852;
+            --seal-end: #2d3840;
+            --gold: #FFA116;
+            --line: #383838;
+            --card-bg: #282828;
+        }
+
+        [data-theme="dark"] body {
+            background: #1a1a1a;
+            color: var(--leetcode-text);
+        }
+
+        [data-theme="dark"] .leetcode-nav {
+            background: #262626;
+            border-bottom-color: #383838;
+        }
+
+        [data-theme="dark"] .leetcode-nav-links a {
+            color: #a0a0a0;
+        }
+
+        [data-theme="dark"] .leetcode-nav-links a:hover {
+            color: #eff1f6;
+        }
+
+        [data-theme="dark"] .leetcode-search {
+            background: #333333;
+            color: #a0a0a0;
+        }
+
+        [data-theme="dark"] .leetcode-icon-btn {
+            color: #a0a0a0;
+        }
+
+        [data-theme="dark"] .leetcode-card {
+            background: #282828;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        [data-theme="dark"] .leetcode-brand-name {
+            color: #eff1f6;
+        }
+
+        [data-theme="dark"] .leetcode-input {
+            background: #333333;
+            border-color: #3e3e3e;
+            color: #eff1f6;
+        }
+
+        [data-theme="dark"] .leetcode-input:focus {
+            border-color: #FFA116;
+        }
+
+        [data-theme="dark"] .captcha-box {
+            background: #222222;
+            border-color: #383838;
+        }
+
+        [data-theme="dark"] .captcha-text {
+            color: #cccccc;
+        }
+
+        [data-theme="dark"] .social-icon-btn {
+            background: #333333;
+            color: #a0a0a0;
+        }
+
+        [data-theme="dark"] .social-icon-btn:hover {
+            background: #404040;
+        }
+
+        [data-theme="dark"] .leetcode-card-links a {
+            color: #8c8c8c;
+        }
+
+        [data-theme="dark"] .leetcode-card-links a:hover {
+            color: #eff1f6;
+        }
+
+        [data-theme="dark"] textarea {
+            background: #333333;
+            border-color: #3e3e3e;
+            color: #eff1f6;
+        }
+
+        [data-theme="dark"] .note-item {
+            background: #262626;
+            border-color: #383838;
+        }
+
+        [data-theme="dark"] .app-frame {
+            background: #262626;
+        }
+
+        [data-theme="dark"] .tab-btn {
+            color: #a0a0a0;
+        }
+
+        [data-theme="dark"] .tab-btn.active {
+            color: #FFA116;
+            border-bottom-color: #FFA116;
+        }
     </style>
 </head>
 
@@ -1123,6 +1245,10 @@
         // Seeding is handled by the server on startup, so we just render.
         render();
 
+    
+        // Apply saved or default dark theme
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
     </script>
 
 </body>
