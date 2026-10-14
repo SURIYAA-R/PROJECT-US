@@ -1150,6 +1150,234 @@
         width: 100%;
       }
     }
+  
+    /* ============================================================
+       BIRTHDAY POP-UP (Mikasa 29/10/2026) — Claymorphism
+    ============================================================ */
+    #birthdayPopupOverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(18, 24, 16, 0.72);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    #birthdayPopupOverlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .birthday-card {
+      background: var(--surface);
+      max-width: 490px;
+      width: 100%;
+      border-radius: 28px;
+      padding: clamp(28px, 4.5vw, 40px) clamp(22px, 3.5vw, 32px);
+      box-shadow:
+        16px 20px 40px var(--clay-shadow-dark),
+        -12px -12px 28px var(--clay-shadow-light),
+        inset -6px -6px 14px var(--clay-inner-dark),
+        inset 6px 6px 14px var(--clay-inner-light);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transform: scale(0.92);
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    #birthdayPopupOverlay.active .birthday-card {
+      transform: scale(1);
+    }
+
+    .birthday-teaser {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .birthday-badge {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--surface-elevated);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      box-shadow:
+        8px 8px 18px var(--clay-shadow-dark),
+        -6px -6px 14px var(--clay-shadow-light),
+        inset -4px -4px 8px var(--clay-inner-dark),
+        inset 4px 4px 8px var(--clay-inner-light);
+      animation: pulseBadge 2.4s ease-in-out infinite;
+    }
+
+    @keyframes pulseBadge {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.06); }
+    }
+
+    .birthday-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.3rem, 3.2vw, 1.55rem);
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.35;
+      margin: 0;
+    }
+
+    .birthday-warning {
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.95rem;
+      font-style: italic;
+      color: var(--gold);
+      margin: 0;
+      letter-spacing: 0.2px;
+    }
+
+    .birthday-open-btn {
+      margin-top: 8px;
+      background: linear-gradient(135deg, var(--seal-start), var(--seal-end));
+      color: #1e3019;
+      border: none;
+      border-radius: 9999px;
+      padding: 13px 36px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.96rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow:
+        6px 8px 18px var(--clay-shadow-dark),
+        -4px -4px 12px var(--clay-shadow-light),
+        inset 2px 2px 5px var(--clay-inner-light),
+        inset -2px -2px 5px var(--clay-inner-dark);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .birthday-open-btn:hover {
+      transform: translateY(-2px);
+      box-shadow:
+        8px 10px 22px var(--clay-shadow-dark),
+        -5px -5px 14px var(--clay-shadow-light),
+        inset 2px 2px 5px var(--clay-inner-light),
+        inset -2px -2px 5px var(--clay-inner-dark);
+    }
+
+    .birthday-open-btn:active {
+      transform: scale(0.97);
+      box-shadow:
+        inset 4px 4px 10px var(--clay-shadow-dark),
+        inset -3px -3px 8px var(--clay-shadow-light);
+    }
+
+    [data-theme="dark"] .birthday-open-btn {
+      background: linear-gradient(135deg, #40683c, #2a4727);
+      color: #e8eed8;
+    }
+
+    .birthday-message-view {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      animation: unfoldMessage 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .birthday-message-view.visible {
+      display: flex;
+    }
+
+    @keyframes unfoldMessage {
+      0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .birthday-letter-quote {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(0.96rem, 2.3vw, 1.10rem);
+      font-style: italic;
+      color: var(--ink);
+      line-height: 1.75;
+      text-align: center;
+      padding: 16px 18px;
+      background: rgba(0, 0, 0, 0.025);
+      border-radius: 20px;
+      box-shadow:
+        inset 3px 3px 7px var(--clay-inner-dark),
+        inset -2px -2px 5px var(--clay-inner-light);
+      margin: 0;
+    }
+
+    [data-theme="dark"] .birthday-letter-quote {
+      background: rgba(0, 0, 0, 0.22);
+    }
+
+    .birthday-close-btn {
+      background: var(--surface-elevated);
+      color: var(--dusk);
+      border: none;
+      border-radius: 9999px;
+      padding: 10px 28px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      box-shadow:
+        4px 4px 10px var(--clay-shadow-dark),
+        -3px -3px 8px var(--clay-shadow-light),
+        inset -2px -2px 4px var(--clay-inner-dark),
+        inset 2px 2px 4px var(--clay-inner-light);
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .birthday-close-btn:hover {
+      color: var(--ink);
+      transform: translateY(-1px);
+    }
+
+    .birthday-close-btn:active {
+      transform: scale(0.97);
+      box-shadow:
+        inset 2px 2px 5px var(--clay-shadow-dark),
+        inset -1px -1px 3px var(--clay-shadow-light);
+    }
+
+    .birthday-particle {
+      position: absolute;
+      pointer-events: none;
+      opacity: 0;
+      animation: floatParticle 2.5s ease-out infinite;
+    }
+
+    @keyframes floatParticle {
+      0% {
+        opacity: 0;
+        transform: translate(0, 0) scale(0.6) rotate(0deg);
+      }
+      20% {
+        opacity: 0.8;
+      }
+      100% {
+        opacity: 0;
+        transform: translate(var(--tx), var(--ty)) scale(1.2) rotate(var(--tr));
+      }
+    }
+
   </style>
 </head>
 
@@ -1324,6 +1552,43 @@
       <div class="modal-actions">
         <button class="modal-btn secondary" id="modalCancel">Cancel</button>
         <button class="modal-btn primary" id="modalSave">Save</button>
+      </div>
+    </div>
+  </div>
+
+  
+  <!-- ============================
+       BIRTHDAY MODAL (Mikasa 29/10/2026)
+  ============================ -->
+  <div id="birthdayPopupOverlay" role="dialog" aria-modal="true" aria-labelledby="birthdayTitle">
+    <div class="birthday-card" id="birthdayCard">
+      <!-- Particle container for animation -->
+      <div id="birthdayParticles" style="position:absolute;inset:0;pointer-events:none;overflow:hidden;"></div>
+
+      <!-- State 1: Teaser / Prompt -->
+      <div class="birthday-teaser" id="birthdayTeaser">
+        <div class="birthday-badge">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+            <polyline points="22,6 12,13 2,6"></polyline>
+          </svg>
+        </div>
+        <h2 class="birthday-title" id="birthdayTitle">You have an important message to read</h2>
+        <p class="birthday-warning">read it alone</p>
+        <button class="birthday-open-btn" id="openBirthdayBtn">Open Message</button>
+      </div>
+
+      <!-- State 2: Message view -->
+      <div class="birthday-message-view" id="birthdayMessageView">
+        <div class="birthday-badge" style="color:var(--gold);">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+        </div>
+        <p class="birthday-letter-quote">
+          "Happiest birthday to my happiest and cutest one. love you jannu.. I have created this website just to communicate with each other peacefully for some time i hope you like it i doesn't have words to express my love but i have still years to spend with you...with love yours"
+        </p>
+        <button class="birthday-close-btn" id="closeBirthdayBtn">Close with love</button>
       </div>
     </div>
   </div>
@@ -1646,6 +1911,73 @@
         if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); el.click(); }
       });
     });
+  
+    // ============================
+    // Birthday Check (Mikasa 29/10/2026)
+    // ============================
+    (function checkBirthday() {
+      if (!currentUser) return;
+      const isMikasa = currentUser.trim().toLowerCase() === 'mikasa';
+      const now = new Date();
+      // Month is 0-indexed: October is 9
+      const isTargetDate = (now.getFullYear() === 2026 && now.getMonth() === 9 && now.getDate() === 29);
+      const urlParams = new URLSearchParams(window.location.search);
+      const isTest = urlParams.get('birthday') === 'test' || urlParams.get('birthday') === 'true';
+
+      if ((isMikasa && isTargetDate) || isTest) {
+        const overlay = document.getElementById('birthdayPopupOverlay');
+        const teaser = document.getElementById('birthdayTeaser');
+        const messageView = document.getElementById('birthdayMessageView');
+        const openBtn = document.getElementById('openBirthdayBtn');
+        const closeBtn = document.getElementById('closeBirthdayBtn');
+        const particlesContainer = document.getElementById('birthdayParticles');
+
+        if (!overlay) return;
+
+        // Pop up smoothly after a brief delay
+        setTimeout(() => {
+          overlay.classList.add('active');
+        }, 600);
+
+        openBtn.addEventListener('click', () => {
+          // Trigger floating particles animation
+          spawnParticles(particlesContainer);
+          // Animate transition to message
+          teaser.style.opacity = '0';
+          teaser.style.transform = 'scale(0.9)';
+          teaser.style.transition = 'all 0.3s ease';
+          setTimeout(() => {
+            teaser.style.display = 'none';
+            messageView.classList.add('visible');
+          }, 300);
+        });
+
+        closeBtn.addEventListener('click', () => {
+          overlay.classList.remove('active');
+        });
+
+        function spawnParticles(container) {
+          if (!container) return;
+          container.innerHTML = '';
+          const colors = ['#d4b574', '#a9d6a0', '#c3d6ac', '#e8eed8'];
+          for (let i = 0; i < 20; i++) {
+            const p = document.createElement('div');
+            p.className = 'birthday-particle';
+            const color = colors[i % colors.length];
+            const size = Math.floor(Math.random() * 8) + 6;
+            p.innerHTML = `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="${color}"><circle cx="12" cy="12" r="10"/></svg>`;
+            p.style.left = '50%';
+            p.style.top = '50%';
+            p.style.setProperty('--tx', `${(Math.random() - 0.5) * 320}px`);
+            p.style.setProperty('--ty', `${(Math.random() - 0.5) * 320}px`);
+            p.style.setProperty('--tr', `${Math.random() * 360}deg`);
+            p.style.animationDelay = `${Math.random() * 0.4}s`;
+            container.appendChild(p);
+          }
+        }
+      }
+    })();
+
   </script>
 
 </body>
